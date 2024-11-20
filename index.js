@@ -17,7 +17,7 @@ app.use(bodyParser.json()); // Для парсинга JSON
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 // Обслуживание статических файлов из папки 'uploads'
-app.use("./admin-panel", express.static(path.join(__dirname, "uploads")));
+// app.use("./admin-panel", express.static(path.join(__dirname, "uploads")));
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
