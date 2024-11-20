@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
 // Обслуживание статических файлов из папки 'client/build'
-app.use(express.static(path.join(__dirname, "client", "build")));
+// app.use(express.static(path.join(__dirname, "client", "build")));
 
 // Обслуживание статических файлов из папки 'uploads'
 // app.use("./admin-panel", express.static(path.join(__dirname, "uploads")));
