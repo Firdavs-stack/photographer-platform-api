@@ -29,6 +29,8 @@ app.use("/api/clients", clientsRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
 
+console.log(apiRoutes);
+
 async function main() {
 	try {
 		await mongoose.connect(
@@ -38,7 +40,7 @@ async function main() {
 
 		// Запуск сервера
 		app.listen(80, () => {
-			console.log("Server is running on port 3000");
+			console.log("Server is running on port 80");
 		});
 	} catch (err) {
 		console.error("Error connecting to MongoDB", err);
