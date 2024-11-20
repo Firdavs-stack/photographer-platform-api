@@ -37,7 +37,7 @@ async function main() {
 		app.use("/api/auth", authRoutes);
 
 		// Запуск сервера
-		app.listen(3000, () => {
+		app.listen(80, () => {
 			console.log("Server is running on port 3000");
 		});
 	} catch (err) {
