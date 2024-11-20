@@ -91,6 +91,7 @@ router.get("/photographers", async (req, res) => {
 			total,
 		});
 	} catch (err) {
+		console.log("SOOOOI");
 		res.status(500).json({ message: "Ошибка сервера" });
 	}
 });
