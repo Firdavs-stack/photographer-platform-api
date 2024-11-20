@@ -29,8 +29,6 @@ app.use("/api/clients", clientsRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
 
-console.log(apiRoutes);
-
 async function main() {
 	try {
 		await mongoose.connect(
