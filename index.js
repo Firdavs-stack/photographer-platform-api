@@ -42,7 +42,10 @@ async function main() {
 		});
 
 		app.get("/", (req, res) => {
-			res.json({ message: "Server is running", status: "success" });
+			res.json({
+				message: "Server is running",
+				status: JSON.stringify(apiRoutes),
+			});
 		});
 	} catch (err) {
 		console.error("Error connecting to MongoDB", err);
