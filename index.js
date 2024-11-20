@@ -23,18 +23,18 @@ app.use(bodyParser.json()); // Для парсинга JSON
 //   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 // });
 // Подключение к MongoDB
+// Подключение маршрутов
+app.use("/api", apiRoutes);
+app.use("/api/clients", clientsRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/auth", authRoutes);
+
 async function main() {
 	try {
 		await mongoose.connect(
 			"mongodb+srv://firdavsusmanov418:gPPbpsmhIDE5sf9b@cluster0.owmnn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 		);
 		console.log("Connected successfully to MongoDB");
-
-		// Подключение маршрутов
-		app.use("/api", apiRoutes);
-		app.use("/api/clients", clientsRoutes);
-		app.use("/api/bookings", bookingRoutes);
-		app.use("/api/auth", authRoutes);
 
 		// Запуск сервера
 		app.listen(80, () => {
