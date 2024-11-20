@@ -28,7 +28,9 @@ app.use("/api", apiRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
-
+app.use((req, res) => {
+	res.status(404).send("Страница не найдена");
+});
 async function main() {
 	try {
 		await mongoose.connect(
