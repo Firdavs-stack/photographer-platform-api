@@ -26,7 +26,7 @@ app.use("./admin-panel", express.static(path.join(__dirname, "uploads")));
 async function main() {
 	try {
 		await mongoose.connect(
-			"mongodb://localhost:27017/photography_platform"
+			"mongodb+srv://firdavsusmanov418:gPPbpsmhIDE5sf9b@cluster0.owmnn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 		);
 		console.log("Connected successfully to MongoDB");
 
