@@ -3,7 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const apiRoutes = require("./api");
+const apiRoutes = require(".routes/api");
 const clientsRoutes = require("./routes/clients");
 const bookingRoutes = require("./routes/booking");
 const authRoutes = require("./routes/auth");
@@ -39,13 +39,6 @@ async function main() {
 		// Запуск сервера
 		app.listen(80, () => {
 			console.log("Server is running on port 3000");
-		});
-
-		app.get("/", (req, res) => {
-			res.json({
-				message: "Server is running",
-				status: JSON.stringify(apiRoutes),
-			});
 		});
 	} catch (err) {
 		console.error("Error connecting to MongoDB", err);
