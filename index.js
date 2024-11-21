@@ -10,27 +10,9 @@ const authRoutes = require("./routes/auth");
 const path = require("path");
 
 const app = express();
-// app.use(
-// 	cors({
-// 		origin: "https://two2one.uz", // Разрешаем только с этого источника
-// 		methods: ["GET", "POST", "PUT", "DELETE"], // Разрешаем все методы
-// 		allowedHeaders: [
-// 			"Content-Type",
-// 			"Authorization",
-// 			"Accept",
-// 			"X-Custom-Header",
-// 		], // Указываем заголовки, которые сервер должен разрешить
-// 		preflightContinue: false, // Для обработки предварительных запросов (OPTIONS)
-// 	})
-// );
-const corsOptions = {
-	origin: ["https://two2one.uz"], // Ваш фронтенд URL
-	methods: ["GET", "POST", "PUT", "DELETE"], // Разрешенные методы
-	allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-	credentials: true, // Если нужно отправлять куки
-};
 
-app.use(cors(corsOptions));
+app.use(cors());
+app.options("*", cors());
 app.use((req, res, next) => {
 	res.setHeader("Referrer-Policy", "unsafe-url"); // или 'no-referrer-when-downgrade'
 	next();
