@@ -8,14 +8,8 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-const corsOptions = {
-	origin: "*", // Укажите ваш домен или '*' для разрешения с любых источников
-	methods: ["GET", "POST", "PUT", "DELETE"], // Укажите методы, для которых разрешен доступ
-	allowedHeaders: "*", // Укажите разрешенные заголовки
-};
-
 // Применение CORS middleware ко всем маршрутам
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
 // Подключение маршрутов
