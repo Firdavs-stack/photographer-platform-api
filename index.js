@@ -23,6 +23,7 @@ const app = express();
 // 		preflightContinue: false, // Для обработки предварительных запросов (OPTIONS)
 // 	})
 // );
+app.use(cors());
 // app.options("*", cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
