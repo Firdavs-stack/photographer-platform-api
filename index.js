@@ -9,30 +9,13 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-const allowedOrigins = ["https://two2one.uz"];
-
 app.use(
 	cors({
-		origin: allowedOrigins,
-		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-		allowedHeaders: ["Content-Type", "Authorization"],
+		origin: "https://two2one.uz","https://two2one.uz/users"
 	})
 );
 
 app.use(bodyParser.json()); // Для парсинга JSON
-
-app.options("*", (req, res) => {
-	res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET, POST, PUT, DELETE, OPTIONS"
-	);
-	res.setHeader(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization"
-	);
-	res.sendStatus(204);
-});
 
 // Подключение маршрутов
 app.use("/api", apiRoutes);
