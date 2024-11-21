@@ -10,7 +10,20 @@ const authRoutes = require("./routes/auth");
 const path = require("path");
 
 const app = express();
-app.use(cors());
+app.use(
+	cors({
+		origin: "https://two2one.uz", // Разрешаем только с этого источника
+		methods: ["GET", "POST", "PUT", "DELETE"], // Разрешаем все методы
+		allowedHeaders: [
+			"Content-Type",
+			"Authorization",
+			"Accept",
+			"X-Custom-Header",
+		], // Указываем заголовки, которые сервер должен разрешить
+		preflightContinue: false, // Для обработки предварительных запросов (OPTIONS)
+	})
+);
+app.options("*", cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
 // Обслуживание статических файлов из папки 'client/build'
