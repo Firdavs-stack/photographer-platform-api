@@ -1,4 +1,3 @@
-const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -9,7 +8,6 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-app.use(cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
 // Подключение маршрутов
