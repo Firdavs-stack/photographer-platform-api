@@ -8,7 +8,6 @@ const { setUserState } = require("../utils/stateManager");
 const multer = require("multer");
 const path = require("path");
 
-router.use(cors());
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
