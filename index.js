@@ -24,6 +24,10 @@ const app = express();
 // 	})
 // );
 app.use(cors());
+app.use((req, res, next) => {
+	res.setHeader("Referrer-Policy", "unsafe-url"); // или 'no-referrer-when-downgrade'
+	next();
+});
 // app.options("*", cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
