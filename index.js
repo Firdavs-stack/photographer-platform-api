@@ -45,7 +45,7 @@ app.use("/api/auth", authRoutes);
 async function main() {
 	try {
 		await mongoose.connect(
-			"mongodb+srv://firdavsusmanov418:gPPbpsmhIDE5sf9b@cluster0.owmnn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+			"mongodb+srv://test-user:eYpp3OsdXrBnsQDc@cluster0.owmnn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 		);
 		console.log("Connected successfully to MongoDB");
 
