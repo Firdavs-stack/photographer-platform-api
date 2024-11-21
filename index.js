@@ -13,8 +13,22 @@ const app = express();
 
 app.use(cors());
 app.options("*", cors());
+
+const allowedOrigins = ["https://two2one.uz"];
+
 app.use((req, res, next) => {
-	res.setHeader("Referrer-Policy", "unsafe-url"); // или 'no-referrer-when-downgrade'
+	const origin = req.headers.origin;
+	if (allowedOrigins.includes(origin)) {
+		res.setHeader("Access-Control-Allow-Origin", origin);
+	}
+	res.setHeader(
+		"Access-Control-Allow-Methods",
+		"GET, POST, PUT, DELETE, OPTIONS"
+	);
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Content-Type, Authorization"
+	);
 	next();
 });
 // app.options("*", cors());
