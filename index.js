@@ -23,7 +23,14 @@ const app = express();
 // 		preflightContinue: false, // Для обработки предварительных запросов (OPTIONS)
 // 	})
 // );
-app.use(cors());
+const corsOptions = {
+	origin: ["https://two2one.uz"], // Ваш фронтенд URL
+	methods: ["GET", "POST", "PUT", "DELETE"], // Разрешенные методы
+	allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+	credentials: true, // Если нужно отправлять куки
+};
+
+app.use(cors(corsOptions));
 app.use((req, res, next) => {
 	res.setHeader("Referrer-Policy", "unsafe-url"); // или 'no-referrer-when-downgrade'
 	next();
