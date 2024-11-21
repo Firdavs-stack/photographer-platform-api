@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
 	cors({
-		origin: "https://two2one.uz","https://two2one.uz/users"
+		origin: "https://two2one.uz","https://two2one.uz/admin/users"
 	})
 );
 
