@@ -10,13 +10,7 @@ const authRoutes = require("./routes/auth");
 const app = express();
 
 // Применение CORS middleware ко всем маршрутам
-const corsOptions = {
-	origin: "https://two2one.uz", // Разрешить только с вашего домена
-	methods: ["GET", "POST", "OPTIONS"], // Методы, которые вы разрешаете
-	allowedHeaders: ["Content-Type", "Authorization"], // Разрешенные заголовки
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json()); // Для парсинга JSON
 
 // Подключение маршрутов
