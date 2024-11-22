@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // URL для отправки сообщений в Telegram
-const botToken = ""; // Укажите ваш токен бота
+const botToken = "7456265736:AAH8zdizZ8nvXo2N8kTHmOWIO9yn-1TYYU8"; // Укажите ваш токен бота
 const apiUrl = `https://api.telegram.org/bot${botToken}`;
 
 // Функция для отправки интерфейса фотографа
@@ -146,7 +146,7 @@ router.post("/:id/promote", upload.any(), async (req, res) => {
 
 			// Обработка фото профиля, если он был загружен
 			if (req.files) {
-				console.log(req.files);
+				console.log("REQ FILES", req.files, req);
 				const profilePhoto = req.files.find((file) =>
 					file.mimetype.startsWith("image/")
 				);
