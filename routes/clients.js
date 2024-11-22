@@ -12,7 +12,7 @@ const path = require("path");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// Разделяем по папкам в зависимости от типа файла, который передаётся
-		console.log(req.body.profilePhoto);
+		console.log("siska", req.body.profilePhoto);
 		if (req.body.type === "profile") {
 			cb(null, "uploads/photographers"); // Путь для фото профиля
 		} else {
