@@ -11,22 +11,6 @@ const app = express();
 
 // Применение CORS middleware ко всем маршрутам
 app.use(cors());
-app.use((req, res, next) => {
-	// Если CORS не включается автоматически, можно добавить эти заголовки вручную
-	res.header("Access-Control-Allow-Origin", "*"); // или укажите ваш домен
-	res.header(
-		"Access-Control-Allow-Methods",
-		"GET, POST, OPTIONS, PUT, DELETE"
-	); // Разрешаем методы
-	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Разрешаем заголовки
-
-	// Обработка OPTIONS запроса
-	if (req.method === "OPTIONS") {
-		return res.sendStatus(200);
-	}
-
-	next();
-});
 
 // Подключение маршрутов
 app.use("/api", apiRoutes);
