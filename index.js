@@ -11,6 +11,8 @@ const app = express();
 
 // Применение CORS middleware ко всем маршрутам
 app.use(cors());
+app.use(express.urlencoded({ extended: true })); // Для обычных данных формы
+app.use(express.json()); // Для JSON
 // Подключение маршрутов
 app.use("/api", apiRoutes);
 app.use("/api/clients", clientsRoutes);
