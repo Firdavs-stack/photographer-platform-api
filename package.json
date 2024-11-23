@@ -1,5 +1,4 @@
 {
-	"proxy": "https://api.two2one.uz",
 	"dependencies": {
 		"axios": "^1.7.7",
 		"bcryptjs": "^2.4.3",
