@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const router = express.Router();
 const Client = require("../models/client"); // Модель клиента
 const Photographer = require("../models/Photographer"); // Модель фотографа
