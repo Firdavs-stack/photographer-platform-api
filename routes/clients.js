@@ -107,7 +107,7 @@ router.get("/:id", async (req, res) => {
 
 // Маршрут для промоушена клиента в фотографа и загрузки профильного фото
 // Основной обработчик POST-запроса для промоушена клиента
-router.post("/:id/promote", upload.any(), async (req, res) => {
+router.post("/:id/promote", express.json(), upload.any(), async (req, res) => {
 	try {
 		const clientId = req.params.id;
 		const type = req.body.type; // Извлекаем `type` из тела запроса
