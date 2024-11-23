@@ -15,8 +15,7 @@ app.use(
 		allowedHeaders: ["Content-Type"],
 	})
 );
-app.use(express.urlencoded({ extended: true })); // Для обычных данных формы
-app.use(express.json()); // Для JSON
+app.use(bodyParser.json()); // Для JSON
 // Подключение маршрутов
 app.use("/api", apiRoutes);
 app.use("/api/clients", clientsRoutes);
