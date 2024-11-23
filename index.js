@@ -10,7 +10,6 @@ const authRoutes = require("./routes/auth");
 const app = express();
 
 // Применение CORS middleware ко всем маршрутам
-app.use(cors());
 
 // Подключение маршрутов
 app.use("/api", apiRoutes);
