@@ -27,7 +27,6 @@ app.use((req, res, next) => {
 
 	next();
 });
-app.use(bodyParser.json()); // Для парсинга JSON
 
 // Подключение маршрутов
 app.use("/api", apiRoutes);
