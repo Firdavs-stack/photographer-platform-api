@@ -108,8 +108,8 @@ router.get("/:id", async (req, res) => {
 
 // Маршрут для промоушена клиента в фотографа и загрузки профильного фото
 // Основной обработчик POST-запроса для промоушена клиента
-router.post("/:id/promote", upload.any(), async (req, res) => {
-	res.json("GOOD");
+router.post("/:id/promote", async (req, res) => {
+	res.json(req);
 });
 
 module.exports = router;
