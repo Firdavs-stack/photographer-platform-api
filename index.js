@@ -15,7 +15,6 @@ app.use(
 		allowedHeaders: ["Content-Type"],
 	})
 );
-app.use(bodyParser.json()); // Для JSON
 // Подключение маршрутов
 app.use("/api", apiRoutes);
 app.use("/api/clients", clientsRoutes);

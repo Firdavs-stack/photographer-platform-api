@@ -6,6 +6,7 @@ const axios = require("axios");
 const { setUserState } = require("../utils/stateManager");
 const multer = require("multer");
 const path = require("path");
+const bodyParser = require("body-parser");
 
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
@@ -107,94 +108,106 @@ router.get("/:id", async (req, res) => {
 
 // Маршрут для промоушена клиента в фотографа и загрузки профильного фото
 // Основной обработчик POST-запроса для промоушена клиента
-router.post("/:id/promote", upload.any(), async (req, res) => {
-	try {
-		const clientId = req.params.id;
-		const type = req.body.type; // Извлекаем `type` из тела запроса
+router.post(
+	"/:id/promote",
+	bodyParser.json(),
+	upload.any(),
+	async (req, res) => {
+		try {
+			const clientId = req.params.id;
+			const type = req.body.type; // Извлекаем `type` из тела запроса
 
-		console.log("HOHHHO", req.body);
-		if (!type) {
-			return res
-				.status(400)
-				.json({ message: "Type is required in the request body" });
-		}
-		if (type === "profile") {
-			// **1. Промоушен клиента в фотографа**
-			const client = await Client.findById(clientId);
-			if (!client) {
-				return res.status(404).json({ message: "Client not found" });
-			}
-			console.log(client);
-			// Формирование данных для нового фотографа
-			const newPhotographerData = {
-				firstName: client.name,
-				lastName: req.body.lastName,
-				telegramId: client.telegramId,
-				telegramUsername: client.telegramUsername,
-				phoneNumber: client.phone,
-				age: req.body.age,
-				experience: req.body.experience,
-				favoriteStyles: req.body.favoriteStyles,
-				hourlyRate: req.body.hourlyRate,
-				sessionTypes: req.body.sessionTypes,
-				status: req.body.status,
-				telegramId: client.telegramId,
-				portfolio: [],
-			};
-			console.log("REQ FILES", req.files, req);
-			// Обработка фото профиля, если он был загружен
-			if (req.files) {
-				const profilePhoto = req.files.find((file) =>
-					file.mimetype.startsWith("image/")
-				);
-				if (profilePhoto) {
-					newPhotographerData.profilePhoto = profilePhoto.path;
-				}
-			}
-
-			// Создаем нового фотографа и удаляем клиента из базы данных
-			const newPhotographer = new Photographer(newPhotographerData);
-			await newPhotographer.save();
-			await Client.findByIdAndDelete(clientId);
-
-			// Отправляем сообщение с интерфейсом фотографа
-			sendPhotographerInterface(newPhotographer.telegramId);
-			res.json({
-				message: "Client promoted to photographer successfully",
-				photographer: newPhotographer,
-			});
-		} else if (type === "portfolio") {
-			// **2. Добавление фото в портфолио существующего фотографа**
-			const photographer = await Photographer.findById(clientId); // Ищем фотографа по ID (тут используется `clientId` как ID фотографа)
-			if (!photographer) {
-				return res
-					.status(404)
-					.json({ message: "Photographer not found" });
-			}
-
-			// Проверяем, есть ли файлы в запросе
-			if (req.files) {
-				for (const file of req.files) {
-					photographer.portfolio.push(file.path); // Добавляем каждый файл в портфолио фотографа
-				}
-				await photographer.save();
-				return res.json({
-					message: "Photos successfully added to portfolio",
-					portfolio: photographer.portfolio,
-				});
-			} else {
+			console.log("HOHHHO", req.body);
+			if (!type) {
 				return res
 					.status(400)
-					.json({ message: "No files provided for portfolio" });
+					.json({ message: "Type is required in the request body" });
 			}
-		} else {
-			// Если неизвестный тип, возвращаем ошибку
-			return res.status(400).json({ message: `Unknown type: ${type}` });
+			if (type === "profile") {
+				// **1. Промоушен клиента в фотографа**
+				const client = await Client.findById(clientId);
+				if (!client) {
+					return res
+						.status(404)
+						.json({ message: "Client not found" });
+				}
+				console.log(client);
+				// Формирование данных для нового фотографа
+				const newPhotographerData = {
+					firstName: client.name,
+					lastName: req.body.lastName,
+					telegramId: client.telegramId,
+					telegramUsername: client.telegramUsername,
+					phoneNumber: client.phone,
+					age: req.body.age,
+					experience: req.body.experience,
+					favoriteStyles: req.body.favoriteStyles,
+					hourlyRate: req.body.hourlyRate,
+					sessionTypes: req.body.sessionTypes,
+					status: req.body.status,
+					telegramId: client.telegramId,
+					portfolio: [],
+				};
+				console.log("REQ FILES", req.files, req);
+				// Обработка фото профиля, если он был загружен
+				if (req.files) {
+					const profilePhoto = req.files.find((file) =>
+						file.mimetype.startsWith("image/")
+					);
+					if (profilePhoto) {
+						newPhotographerData.profilePhoto = profilePhoto.path;
+					}
+				}
+
+				// Создаем нового фотографа и удаляем клиента из базы данных
+				const newPhotographer = new Photographer(newPhotographerData);
+				await newPhotographer.save();
+				await Client.findByIdAndDelete(clientId);
+
+				// Отправляем сообщение с интерфейсом фотографа
+				sendPhotographerInterface(newPhotographer.telegramId);
+				res.json({
+					message: "Client promoted to photographer successfully",
+					photographer: newPhotographer,
+				});
+			} else if (type === "portfolio") {
+				// **2. Добавление фото в портфолио существующего фотографа**
+				const photographer = await Photographer.findById(clientId); // Ищем фотографа по ID (тут используется `clientId` как ID фотографа)
+				if (!photographer) {
+					return res
+						.status(404)
+						.json({ message: "Photographer not found" });
+				}
+
+				// Проверяем, есть ли файлы в запросе
+				if (req.files) {
+					for (const file of req.files) {
+						photographer.portfolio.push(file.path); // Добавляем каждый файл в портфолио фотографа
+					}
+					await photographer.save();
+					return res.json({
+						message: "Photos successfully added to portfolio",
+						portfolio: photographer.portfolio,
+					});
+				} else {
+					return res
+						.status(400)
+						.json({ message: "No files provided for portfolio" });
+				}
+			} else {
+				// Если неизвестный тип, возвращаем ошибку
+				return res
+					.status(400)
+					.json({ message: `Unknown type: ${type}` });
+			}
+		} catch (error) {
+			console.error(
+				"Error promoting client or adding to portfolio:",
+				error
+			);
+			res.status(500).json({ message: "Server error", error });
 		}
-	} catch (error) {
-		console.error("Error promoting client or adding to portfolio:", error);
-		res.status(500).json({ message: "Server error", error });
 	}
-});
+);
 
 module.exports = router;
