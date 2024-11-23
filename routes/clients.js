@@ -118,7 +118,6 @@ router.post("/:id/promote", upload.any(), async (req, res) => {
 				.status(400)
 				.json({ message: "Type is required in the request body" });
 		}
-		console.log(req.type);
 		if (type === "profile") {
 			// **1. Промоушен клиента в фотографа**
 			const client = await Client.findById(clientId);
