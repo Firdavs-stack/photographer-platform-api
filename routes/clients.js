@@ -155,8 +155,8 @@ router.post("/:id/promote", upload, async (req, res) => {
 			};
 
 			// Обработка фото профиля, если он был загружен
-			if (req.files) {
-				const profilePhoto = req.files.find((file) =>
+			if (req.files.profilePhoto[0]) {
+				const profilePhoto = req.files.profilePhoto[0].find((file) =>
 					file.mimetype.startsWith("image/")
 				);
 				if (profilePhoto) {
