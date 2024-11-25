@@ -125,6 +125,7 @@ router.post("/:id/promote", upload, async (req, res) => {
 		const clientId = req.params.id;
 		const type = req.body.type; // Извлекаем `type` из тела запроса
 
+		console.log("SOSO PAVLYA", req.query.type);
 		console.log("REQ FILES HOHOOHO", req);
 		if (!type) {
 			return res
