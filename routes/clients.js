@@ -155,13 +155,17 @@ router.post("/:id/promote", upload, async (req, res) => {
 			};
 
 			// Обработка фото профиля, если он был загружен
-			if (req.files.profilePhoto[0]) {
-				const profilePhoto = req.files.profilePhoto[0].find((file) =>
-					file.mimetype.startsWith("image/")
-				);
-				if (profilePhoto) {
-					newPhotographerData.profilePhoto = profilePhoto.path;
+			if (req.files.profilePhoto && req.files.profilePhoto.length > 0) {
+				const profilePhoto = req.files.profilePhoto[0]; // Берем первый файл из массива
+
+				// Проверяем MIME-тип файла
+				if (profilePhoto.mimetype.startsWith("image/")) {
+					newPhotographerData.profilePhoto = profilePhoto.path; // Сохраняем путь к файлу
+				} else {
+					console.error("Загруженный файл не является изображением");
 				}
+			} else {
+				console.error("Файл профиля не найден");
 			}
 
 			// Создаем нового фотографа и удаляем клиента из базы данных
