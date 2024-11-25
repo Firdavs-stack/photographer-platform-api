@@ -25,7 +25,10 @@ const storage = multer.diskStorage({
 });
 
 // Создаем multer instance
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).fields([
+	{ name: "profilePhoto" },
+	{ name: "type" },
+]);
 
 // URL для отправки сообщений в Telegram
 const botToken = "7456265736:AAH8zdizZ8nvXo2N8kTHmOWIO9yn-1TYYU8"; // Укажите ваш токен бота
