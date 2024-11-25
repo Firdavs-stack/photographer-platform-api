@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// Переносим тип файла в `req.body.type` для правильной обработки
+		console.log("SOSO", req.query.type);
 		const uploadPath =
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? "uploads/photographers"
