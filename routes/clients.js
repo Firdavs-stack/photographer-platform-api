@@ -27,6 +27,13 @@ const storage = multer.diskStorage({
 // Создаем multer instance
 const upload = multer({ storage: storage }).fields([
 	{ name: "profilePhoto" },
+	{ name: "lastName" },
+	{ name: "age" },
+	{ name: "experience" },
+	{ name: "favoriteStyles" },
+	{ name: "hourlyRate" },
+	{ name: "sessionTypes" },
+	{ name: "status" },
 	{ name: "type" },
 ]);
 
