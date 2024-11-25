@@ -12,7 +12,7 @@ const bodyParser = require("body-parser");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		let uploadPath;
-
+		console.log(req.body.type);
 		// Разделяем по папкам в зависимости от типа файла
 		if (req.body.type === "profile") {
 			uploadPath = "uploads/photographers"; // Путь для фото профиля
