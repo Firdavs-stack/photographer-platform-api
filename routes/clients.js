@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// Разделяем по папкам в зависимости от типа файла, который передаётся
+		console.log("PAPASITA", req.body.type);
 		if (req.body.type === "profile") {
 			cb(null, "uploads/photographers"); // Путь для фото профиля
 		} else {
@@ -165,6 +166,7 @@ router.post("/:id/promote", upload.single("profilePhoto"), async (req, res) => {
 				photographer: newPhotographer,
 			});
 		} else if (type === "portfolio") {
+			console.log("MAMASITA");
 			// **2. Добавление фото в портфолио существующего фотографа**
 			const photographer = await Photographer.findById(clientId); // Ищем фотографа по ID (тут используется `clientId` как ID фотографа)
 			if (!photographer) {
