@@ -11,16 +11,17 @@ const bodyParser = require("body-parser");
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		// Разделяем по папкам в зависимости от типа файла, который передаётся
-		console.log("PAPASITA", req.body.type);
-		if (req.body.type === "profile") {
-			cb(null, "uploads/photographers"); // Путь для фото профиля
-		} else {
-			cb(null, "uploads/portfolio"); // Путь для фото портфолио
-		}
+		// Переносим тип файла в `req.body.type` для правильной обработки
+		const uploadPath =
+			req.query.type === "profile" // Если `type` передан в query-параметрах
+				? "uploads/photographers"
+				: "uploads/portfolio";
+
+		console.log("Выбранный путь:", uploadPath);
+		cb(null, uploadPath);
 	},
 	filename: function (req, file, cb) {
-		cb(null, Date.now() + path.extname(file.originalname)); // Генерация уникального имени файла
+		cb(null, Date.now() + path.extname(file.originalname)); // Уникальное имя файла
 	},
 });
 
