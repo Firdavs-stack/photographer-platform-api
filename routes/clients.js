@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		let uploadPath;
+
 		// Разделяем по папкам в зависимости от типа файла
 		if (req.body.type === "profile") {
 			uploadPath = "uploads/photographers"; // Путь для фото профиля
@@ -153,7 +154,7 @@ router.post("/:id/promote", upload.single("profilePhoto"), async (req, res) => {
 
 			// Обработка фото профиля, если он был загружен
 			if (req.files) {
-				const profilePhoto = await req.files.find((file) =>
+				const profilePhoto = req.files.find((file) =>
 					file.mimetype.startsWith("image/")
 				);
 				if (profilePhoto) {
