@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 
-const sourceDir = path.resolve(__dirname, "../.."); // Корневая директория сервера
+const sourceDir = path.resolve(__dirname, "../../.."); // Корневая директория сервера
 
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
@@ -20,11 +20,11 @@ const storage = multer.diskStorage({
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? `${path.resolve(
 						__dirname,
-						"../../two2one.uz/images/profile"
+						"../../../two2one.uz/images/profile"
 				  )}`
 				: `${path.resolve(
 						__dirname,
-						"../../two2one.uz/images/portfolio"
+						"../../../two2one.uz/images/portfolio"
 				  )}`;
 		photoPath = uploadPath;
 		console.log("Выбранный путь:", uploadPath);
