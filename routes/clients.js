@@ -40,7 +40,7 @@ const upload = multer({ storage: storage }).fields([
 ]);
 
 // URL для отправки сообщений в Telegram
-const botToken = "7456265736:AAH8zdizZ8nvXo2N8kTHmOWIO9yn-1TYYU8"; // Укажите ваш токен бота
+const botToken = "7456265736:AAFQDmk4S3uqrOmieU0dcX5VRrHemHE6DG8"; // Укажите ваш токен бота
 const apiUrl = `https://api.telegram.org/bot${botToken}`;
 
 // Функция для отправки интерфейса фотографа
@@ -125,7 +125,7 @@ router.post("/:id/promote", upload, async (req, res) => {
 		const clientId = req.params.id;
 		const type = req.body.type; // Извлекаем `type` из тела запроса
 
-		console.log("SOSO PAVLYA", req.query.type);
+		console.log("SOSO PAVLYA", req.body.type);
 		console.log("REQ FILES HOHOOHO", req);
 		if (!type) {
 			return res
