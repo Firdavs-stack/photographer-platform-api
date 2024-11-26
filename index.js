@@ -21,19 +21,17 @@ app.use("/api/auth", authRoutes);
 
 // Подключение к MongoDB
 
-// const rootDir = path.resolve(__dirname, "/uploads/portfolio"); // Например, если вы находитесь в папке /src
+const rootDir = path.resolve(__dirname, "uploads/portfolio"); // Например, если вы находитесь в папке /src
 
 // Функция для получения файлов из директории
-// fs.readdir(rootDir, (err, files) => {
-// 	console.log()
-// 	if (err) {
-// 		console.error("Ошибка при чтении директории:", err);
-// 		return;
-// 	}
+fs.readdir(rootDir, (err, files) => {
+	if (err) {
+		console.error("Ошибка при чтении директории:", err);
+		return;
+	}
 
-// 	console.log("Файлы в корневой директории:", files);
-// });
-console.log(__dirname);
+	console.log("Файлы в корневой директории:", files);
+});
 async function main() {
 	try {
 		await mongoose.connect(
