@@ -19,10 +19,7 @@ const storage = multer.diskStorage({
 		const uploadPath =
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? `${path.resolve(sourceDir, "two2one.uz/images/profile")}`
-				: `${path.resolve(
-						sourceDir,
-						"../../two2one.uz/images/portfolio"
-				  )}`;
+				: `${path.resolve(sourceDir, "two2one.uz/images/portfolio")}`;
 		photoPath = uploadPath;
 		console.log("Выбранный путь:", uploadPath);
 		cb(null, uploadPath);
