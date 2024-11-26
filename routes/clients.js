@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 
-const sourceDir = path.resolve(__dirname, "../.."); // Корневая директория сервера
+const sourceDir = path.resolve(__dirname, "../../.."); // Корневая директория сервера
 
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
