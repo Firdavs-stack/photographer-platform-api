@@ -5,7 +5,6 @@ const Photographer = require("../models/Photographer"); // Модель фото
 const axios = require("axios");
 const { setUserState } = require("../utils/stateManager");
 const multer = require("multer");
-const path = require("path");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
