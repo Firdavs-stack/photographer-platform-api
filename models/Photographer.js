@@ -15,7 +15,7 @@ const photographerSchema = new mongoose.Schema({
 	age: Number,
 	experience: String,
 	favoriteStyles: [String],
-	profilePhoto: Buffer,
+	profilePhoto: String,
 	portfolio: [portfolioItemSchema],
 	status: {
 		type: String,

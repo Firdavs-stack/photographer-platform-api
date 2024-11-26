@@ -130,7 +130,6 @@ router.post("/:id/promote", upload, async (req, res) => {
 
 		const { path: tempPath, filename } = req.files.profilePhoto[0];
 
-		console.log("ПУТЬ", tempPath);
 		// const optimizedPath = path.resolve(
 		// 	tempPath,
 		// 	"..",
