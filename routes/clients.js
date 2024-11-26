@@ -137,18 +137,18 @@ router.post("/:id/promote", upload, async (req, res) => {
 
 		const { path: tempPath, filename } = req.files.profilePhoto[0];
 
-		const optimizedPath = path.resolve(
-			tempPath,
-			"..",
-			`optimized-${filename}`
-		);
+		// const optimizedPath = path.resolve(
+		// 	tempPath,
+		// 	"..",
+		// 	`optimized-${filename}`
+		// );
 
-		await sharp(tempPath)
-			.resize(800, 800, { fit: "inside" }) // Изменение размера (например, максимум 800x800)
-			.toFormat("webp") // Конвертация в WebP
-			.toFile(optimizedPath);
+		// await sharp(tempPath)
+		// 	.resize(800, 800, { fit: "inside" }) // Изменение размера (например, максимум 800x800)
+		// 	.toFormat("webp") // Конвертация в WebP
+		// 	.toFile(optimizedPath);
 
-		fs.unlinkSync(tempPath);
+		// fs.unlinkSync(tempPath);
 
 		if (!type) {
 			return res
@@ -186,7 +186,7 @@ router.post("/:id/promote", upload, async (req, res) => {
 
 				// Проверяем MIME-тип файла
 				if (profilePhoto.mimetype.startsWith("image/")) {
-					newPhotographerData.profilePhoto = profilePhoto.path; // Сохраняем путь к файлу
+					newPhotographerData.profilePhoto = tempPath; // Сохраняем путь к файлу
 				} else {
 					console.error("Загруженный файл не является изображением");
 				}
