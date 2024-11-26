@@ -7,8 +7,12 @@ const { setUserState } = require("../utils/stateManager");
 const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+const path = require("path");
+const sharp = require("sharp");
 
-let photoPath = "";
+const sourceDir = path.resolve(__dirname, "../.."); // Корневая директория сервера
+
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -16,8 +20,14 @@ const storage = multer.diskStorage({
 		console.log("SOSO", req.query.type);
 		const uploadPath =
 			req.query.type === "profile" // Если `type` передан в query-параметрах
-				? "uploads/photographers"
-				: "uploads/portfolio";
+				? `${path.resolve(
+						__dirname,
+						"../../two2one.uz/images/profile"
+				  )}`
+				: `${path.resolve(
+						__dirname,
+						"../../two2one.uz/images/portfolio"
+				  )}`;
 		photoPath = uploadPath;
 		console.log("Выбранный путь:", uploadPath);
 		cb(null, uploadPath);
@@ -126,8 +136,21 @@ router.post("/:id/promote", upload, async (req, res) => {
 		const clientId = req.params.id;
 		const type = req.body.type; // Извлекаем `type` из тела запроса
 
-		console.log("SOSO PAVLYA", req.body.type);
-		console.log("REQ FILES HOHOOHO", req);
+		const { path: tempPath, filename } = req.files.profilePhoto[0];
+
+		const optimizedPath = path.resolve(
+			tempPath,
+			"..",
+			`optimized-${filename}`
+		);
+
+		await sharp(tempPath)
+			.resize(800, 800, { fit: "inside" }) // Изменение размера (например, максимум 800x800)
+			.toFormat("webp") // Конвертация в WebP
+			.toFile(optimizedPath);
+
+		fs.unlinkSync(tempPath);
+
 		if (!type) {
 			return res
 				.status(400)

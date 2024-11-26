@@ -6,8 +6,6 @@ const apiRoutes = require("./apiRouter.js");
 const clientsRoutes = require("./routes/clients");
 const bookingRoutes = require("./routes/booking");
 const authRoutes = require("./routes/auth");
-const fs = require("fs");
-const path = require("path");
 
 const app = express();
 
@@ -21,17 +19,6 @@ app.use("/api/auth", authRoutes);
 
 // Подключение к MongoDB
 
-const rootDir = path.resolve(__dirname, "uploads/portfolio"); // Например, если вы находитесь в папке /src
-
-// Функция для получения файлов из директории
-fs.readdir(rootDir, (err, files) => {
-	if (err) {
-		console.error("Ошибка при чтении директории:", err);
-		return;
-	}
-
-	console.log("Файлы в корневой директории:", files);
-});
 async function main() {
 	try {
 		await mongoose.connect(
