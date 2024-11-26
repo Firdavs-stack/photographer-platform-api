@@ -8,6 +8,7 @@ const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
 
+let photoPath = "";
 // Настройка multer для сохранения файлов в зависимости от типа запроса
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -17,7 +18,7 @@ const storage = multer.diskStorage({
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? "uploads/photographers"
 				: "uploads/portfolio";
-
+		photoPath = uploadPath;
 		console.log("Выбранный путь:", uploadPath);
 		cb(null, uploadPath);
 	},
