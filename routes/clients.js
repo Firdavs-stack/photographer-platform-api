@@ -8,7 +8,6 @@ const multer = require("multer");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
-const sharp = require("sharp");
 
 const sourceDir = path.resolve(__dirname, "../.."); // Корневая директория сервера
 
