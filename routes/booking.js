@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const bodyParser = require("body-parser");
 const Booking = require("../models/booking");
 const Photographer = require("../models/Photographer");
 const { default: axios } = require("axios");
@@ -40,7 +39,6 @@ router.post("/", async (req, res) => {
 			photographerId,
 			date,
 			timeSlot,
-			prepayment,
 		});
 		await newBooking.save();
 		res.status(201).json(newBooking);
