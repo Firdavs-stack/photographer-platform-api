@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bodyParser = require("body-parser");
 const Booking = require("../models/booking");
 const Photographer = require("../models/Photographer");
 const { default: axios } = require("axios");

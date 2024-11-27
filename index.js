@@ -11,12 +11,13 @@ const app = express();
 
 // Применение CORS middleware ко всем маршрутам
 app.use(cors());
+app.use(bodyParser.json());
 // Подключение маршрутов
 app.use("/api", apiRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
-app.use(express.json());
+
 // Подключение к MongoDB
 
 async function main() {
