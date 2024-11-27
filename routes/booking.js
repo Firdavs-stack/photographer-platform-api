@@ -31,7 +31,7 @@ router.get("/client/:clientId", async (req, res) => {
 
 // Создать новое бронирование
 router.post("/", async (req, res) => {
-	console.log(req.body);
+	console.log("REQ", req);
 	const { clientId, photographerId, date, timeSlot, prepayment } = req.body;
 	try {
 		const newBooking = new Booking({
