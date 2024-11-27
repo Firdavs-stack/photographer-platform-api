@@ -1,8 +1,8 @@
 const express = require("express");
+const router = express.Router();
 const Booking = require("../models/booking");
 const Photographer = require("../models/Photographer");
 const { default: axios } = require("axios");
-const router = express.Router();
 
 // Получить все бронирования с определенным статусом
 router.get("/", async (req, res) => {
