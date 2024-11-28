@@ -5,7 +5,6 @@ const Photographer = require("../models/Photographer"); // Модель фото
 const axios = require("axios");
 const { setUserState } = require("../utils/stateManager");
 const multer = require("multer");
-const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 
@@ -52,12 +51,18 @@ const sendPhotographerInterface = async (chatId) => {
 
 	const photographerKeyboard = {
 		keyboard: [
-			[{ text: "📸 Добавить портфолио" }],
-			[{ text: "📅 Просмотреть бронирования" }],
-			[{ text: "⚙️ Настройки личной информации" }],
-			[{ text: "🕒 Выбрать временные промежутки" }],
-			[{ text: "💳 Управление реквизитами" }], // Новая кнопка
-			[{ text: "🎟 Получить ссылку для приглашения" }], // Новая кнопка
+			[
+				{ text: "📸 Добавить портфолио" },
+				{ text: "📅 Просмотреть бронирования" },
+			],
+			[
+				{ text: "⚙️ Настройки личной информации" },
+				{ text: "🕒 Выбрать временные промежутки" },
+			],
+			[
+				{ text: "💳 Управление реквизитами" },
+				{ text: "🎟 Получить ссылку для приглашения" },
+			],
 		],
 		resize_keyboard: true,
 		one_time_keyboard: false,
