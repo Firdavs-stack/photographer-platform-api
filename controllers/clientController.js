@@ -149,7 +149,7 @@ async function handleClientMessage(bot, msg, client) {
 			`Ваши данные:\nИмя: ${client.name}\nТелефон: ${client.phone}\n\nДля обновления отправьте новые данные в формате 'Имя; Телефон'.`
 		);
 		stateController.setState(chatId, { state: "awaiting_profile_update" });
-	} else if (text === "📅 Мои бронирования") {
+	} else if (text === "📅 Бронирования") {
 		const bookings = await Booking.find({ clientId: client._id });
 		if (bookings.length === 0) {
 			bot.sendMessage(chatId, "У вас нет бронирований.");
