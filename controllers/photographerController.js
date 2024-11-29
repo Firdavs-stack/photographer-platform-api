@@ -213,7 +213,7 @@ async function handlePhotographerMessage(bot, msg, photographer) {
 				state: "awaiting_profile_update",
 			});
 			break;
-		case "🎟 Получить ссылку для приглашения":
+		case "🎟 Ссылка":
 			await sendInvitationLink(bot, chatId, photographer._id);
 			break;
 		case "💳 Реквизиты":
