@@ -453,6 +453,7 @@ async function chooseNamingPortfolioPhotos(bot, chatId, text, state) {
 			bot.sendMessage(chatId, "Вы не отправили ни одной фотографии.");
 			return;
 		}
+		console.log(tempPhotos);
 		await savePhotosToPortfolio(bot, photographer, tempPhotos, chatId);
 
 		await stateController.clearState(chatId);
