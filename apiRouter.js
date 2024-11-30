@@ -25,7 +25,15 @@ const router = express.Router();
 // Настройка хранилища для multer
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "uploads/"); // Папка для хранения загруженных файлов
+		// Переносим тип файла в `req.body.type` для правильной обработки
+		console.log("SOSO", req.query.type);
+		const uploadPath =
+			req.query.type === "profile" // Если `type` передан в query-параметрах
+				? `${path.resolve(sourceDir, "two2one.uz/images/profile")}`
+				: `${path.resolve(sourceDir, "two2one.uz/images/portfolio")}`;
+		photoPath = uploadPath;
+		console.log("Выбранный путь:", uploadPath);
+		cb(null, uploadPath);
 	},
 	filename: function (req, file, cb) {
 		cb(null, Date.now() + path.extname(file.originalname)); // Уникальное имя файла
