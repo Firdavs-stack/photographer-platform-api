@@ -7,6 +7,8 @@ const stateController = require("./stateController");
 const axios = require("axios");
 const fs = require("fs");
 
+const sourceDir = path.resolve(__dirname, "../../..");
+
 // Определяем команды по умолчанию для фотографов
 const photographerDefaultCommands = [
 	"📸 Добавить портфолио",
@@ -467,6 +469,7 @@ async function savePhotosToPortfolio(bot, photographer, tempPhotos, chatId) {
 		for (const photo of tempPhotos) {
 			const file = await bot.getFile(photo.file_id);
 			const filePath = file.file_path;
+			console.log(file, filePath);
 			const downloadUrl = `https://api.telegram.org/file/bot${bot.token}/${filePath}`;
 
 			const axiosResponse = await axios.get(downloadUrl, {
@@ -475,7 +478,8 @@ async function savePhotosToPortfolio(bot, photographer, tempPhotos, chatId) {
 			const filename = `${path.resolve(
 				sourceDir,
 				"two2one.uz/images/portfolio"
-			)}${Date.now()}_${photo.file_id}.jpg`;
+			)}${Date.now()}_${photo.file_id}.png`;
+			console.log("SIIIU", file);
 			const writer = fs.createWriteStream(filename);
 			axiosResponse.data.pipe(writer);
 
