@@ -21,6 +21,8 @@ const Client = require("./models/client");
 //   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 // });
 
+const sourceDir = path.resolve(__dirname, "../../..");
+
 const router = express.Router();
 // Настройка хранилища для multer
 const storage = multer.diskStorage({
