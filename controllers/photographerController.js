@@ -109,13 +109,12 @@ async function handlePhotographerMessage(bot, msg, photographer) {
 	const text = msg.text.trim();
 	let state = await stateController.getState(chatId);
 	console.log(chatId);
+	console.log(text, state, "MAMAMAM");
 	if (isDefaultCommand(text, photographerDefaultCommands) && state) {
 		await stateController.clearState(chatId);
 		state = null; // Обновляем переменную state после очистки
 		// Продолжаем выполнение для обработки команды по умолчанию
 	}
-
-	console.log(text, state);
 
 	// Обработка различных состояний фотографа
 	if (state) {
