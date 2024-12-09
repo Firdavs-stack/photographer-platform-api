@@ -39,6 +39,10 @@ async function showPortfolioForEditing(bot, chatId, photographer) {
 		return;
 	}
 
+	await stateController.setState(chatId, {
+		state: "awaiting_portfolio_info_for_editing",
+	});
+
 	const portfolioMessages = photographer.portfolio.map((photo, index) => {
 		return {
 			type: "photo",
@@ -52,6 +56,7 @@ async function showPortfolioForEditing(bot, chatId, photographer) {
 
 	await bot.sendMediaGroup(chatId, portfolioMessages);
 
+	console.log(state);
 	await bot.sendMessage(
 		chatId,
 		"Чтобы изменить данные о фото, введите номер фото и новые данные в формате: 'номер; новое название; новая категория'",
@@ -177,6 +182,15 @@ async function handlePhotographerMessage(bot, msg, photographer) {
 				await stateController.clearState(chatId);
 
 				bot.sendMessage(chatId, "Ваши данные успешно обновлены.");
+				break;
+			case "awaiting_portfolio_info_for_editing":
+				const [numb, newNaming, newCategory] = text
+					.split(";")
+					.map((entry) => entry.trim);
+				bot.sendMessage(
+					chatId,
+					`Вы ввели ${(numb, newNaming, newCategory)}`
+				);
 				break;
 			case "awaiting_payment_details":
 				console.log(text);
