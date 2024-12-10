@@ -14,7 +14,9 @@ const run = async () => {
 
 		try {
 			// Удаляем бронирования, у которых дата меньше текущей
-			const result = await Booking.deleteMany({ date: { $lt: today } });
+			const result = await Booking.deleteMany({
+				"schedule.date": { $lt: today },
+			});
 			console.log(`Удалено ${result.deletedCount} старых бронирований.`);
 		} catch (error) {
 			console.error("Ошибка при удалении прошедших бронирований:", error);
