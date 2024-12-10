@@ -26,8 +26,6 @@ const run = async () => {
 		console.log("Удаление старых бронирований завершено.");
 	} catch (error) {
 		console.error("Ошибка при удалении старых бронирований:", error);
-	} finally {
-		mongoose.disconnect(); // Закрываем соединение с базой
 	}
 };
 
