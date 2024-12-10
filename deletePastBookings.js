@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const cron = require("node-cron");
 const { connectToDatabase } = require("./db"); // Импортируем функцию подключения
-const Booking = require("../models/Booking"); // Импортируем модель бро
+const Booking = require("./models/booking"); // Импортируем модель бро
 
 // Запуск работы
 const run = async () => {
