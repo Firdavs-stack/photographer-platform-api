@@ -15,13 +15,18 @@ const run = async () => {
 
 		try {
 			// Удаляем бронирования, у которых дата меньше текущей
-			console.log(Booking);
-			const result = await Booking.deleteMany({
-				"schedule.date": { $lt: today },
-			});
-			console.log(`Удалено ${result.deletedCount} старых бронирований.`);
+
+			const result = await Booking.updateMany(
+				{}, // Условие для выборки всех документов
+				{
+					$pull: {
+						schedule: { date: { $lt: today } }, // Удаляем элементы массива schedule с датами меньше today
+					},
+				}
+			);
+			console.log(`Обновлено ${result.modifiedCount} документов.`);
 		} catch (error) {
-			console.error("Ошибка при удалении прошедших бронирований:", error);
+			console.error("Ошибка при удалении старых дат из schedule:", error);
 			throw error; // Пробрасываем ошибку дальше, если она произошла
 		}
 		console.log("Удаление старых бронирований завершено.");
