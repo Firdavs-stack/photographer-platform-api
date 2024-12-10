@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const cron = require("node-cron");
 const { connectToDatabase } = require("./db"); // Импортируем функцию подключения
-const Booking = require("./models/booking"); // Импортируем модель бро
+const Photographer = require("./models/Photographer"); // Импортируем модель бро
 
 // Запуск работы
 const run = async () => {
@@ -16,7 +16,7 @@ const run = async () => {
 		try {
 			// Удаляем бронирования, у которых дата меньше текущей
 
-			const result = await Booking.updateMany(
+			const result = await Photographer.updateMany(
 				{}, // Применяем ко всем документам
 				{
 					$pull: {
