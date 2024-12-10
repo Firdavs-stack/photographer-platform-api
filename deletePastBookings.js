@@ -17,10 +17,10 @@ const run = async () => {
 			// Удаляем бронирования, у которых дата меньше текущей
 
 			const result = await Booking.updateMany(
-				{}, // Условие для выборки всех документов
+				{}, // Применяем ко всем документам
 				{
 					$pull: {
-						schedule: { date: { $lt: today } }, // Удаляем элементы массива schedule с датами меньше today
+						schedule: { date: { $lt: today } }, // Удаляем элементы массива с date < today
 					},
 				}
 			);
