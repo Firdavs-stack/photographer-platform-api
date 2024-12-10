@@ -19,6 +19,10 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
 
 // Подключение к MongoDB
-connectToDatabase();
+connectToDatabase().then(() => {
+	app.listen(80, () => {
+		console.log("Server is running on port 80");
+	});
+});
 
 main();
