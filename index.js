@@ -24,5 +24,3 @@ connectToDatabase().then(() => {
 		console.log("Server is running on port 80");
 	});
 });
-
-main();
