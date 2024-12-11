@@ -50,20 +50,36 @@ router.post("/", async (req, res) => {
 	}
 });
 
-router.delete("/bookings/past-dates/:photographerId", async (req, res) => {
-	const { photographerId } = req.params;
-	const { date } = req.query;
+router.delete(
+	"/photographers/:photographerId/remove-past-schedules",
+	async (req, res) => {
+		const { photographerId } = req.params;
 
-	try {
-		await Booking.deleteMany({
-			photographerId: photographerId,
-			date: { $lt: new Date(date) },
-		});
-		res.status(200).send("Записи с прошедшей датой удалены");
-	} catch (error) {
-		res.status(500).send("Ошибка при удалении записей");
+		try {
+			// Получаем текущую дату
+			const today = new Date();
+
+			// Находим фотографа и удаляем старые записи из его расписания
+			const photographer = await Photographer.findById(photographerId);
+
+			// Если фотограф найден, фильтруем и обновляем расписание
+			if (photographer) {
+				// Обновляем массив schedule, удаляя все даты меньше сегодняшней
+				photographer.schedule = photographer.schedule.filter(
+					(slot) => new Date(slot.date) >= today
+				);
+				await photographer.save();
+
+				res.status(200).send("Прошедшие записи из расписания удалены");
+			} else {
+				res.status(404).send("Фотограф не найден");
+			}
+		} catch (error) {
+			console.error("Ошибка при удалении записей:", error);
+			res.status(500).send("Ошибка при удалении записей");
+		}
 	}
-});
+);
 
 // Загрузить скриншот оплаты и обновить статус на "awaiting_confirmation"
 router.put("/:id/uploadScreenshot", async (req, res) => {
