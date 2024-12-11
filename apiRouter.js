@@ -106,6 +106,35 @@ router.get("/photographers", async (req, res) => {
 	}
 });
 
+router.delete("photographers/past-dates/:id", async (req, res) => {
+	console.log("MUCHACHUCHA");
+	const { photographerId } = req.params;
+
+	try {
+		// Получаем текущую дату
+		const today = new Date();
+
+		// Находим фотографа и удаляем старые записи из его расписания
+		const photographer = await Photographer.findById(photographerId);
+
+		// Если фотограф найден, фильтруем и обновляем расписание
+		if (photographer) {
+			// Обновляем массив schedule, удаляя все даты меньше сегодняшней
+			photographer.schedule = photographer.schedule.filter(
+				(slot) => new Date(slot.date) >= today
+			);
+			await photographer.save();
+
+			res.status(200).send("Прошедшие записи из расписания удалены");
+		} else {
+			res.status(404).send("Фотограф не найден");
+		}
+	} catch (error) {
+		console.error("Ошибка при удалении записей:", error);
+		res.status(500).send("Ошибка при удалении записей");
+	}
+});
+
 // Получение информации о фотографе и расписании
 router.get("/photographers/:id", async (req, res) => {
 	const photographerId = req.params.id;
