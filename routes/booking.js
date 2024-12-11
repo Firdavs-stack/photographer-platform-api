@@ -50,6 +50,21 @@ router.post("/", async (req, res) => {
 	}
 });
 
+router.delete("/bookings/past-dates/:photographerId", async (req, res) => {
+	const { photographerId } = req.params;
+	const { date } = req.query;
+
+	try {
+		await Booking.deleteMany({
+			photographerId: photographerId,
+			date: { $lt: new Date(date) },
+		});
+		res.status(200).send("Записи с прошедшей датой удалены");
+	} catch (error) {
+		res.status(500).send("Ошибка при удалении записей");
+	}
+});
+
 // Загрузить скриншот оплаты и обновить статус на "awaiting_confirmation"
 router.put("/:id/uploadScreenshot", async (req, res) => {
 	const { id } = req.params;
