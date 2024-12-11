@@ -36,7 +36,7 @@ const run = async () => {
 	}
 };
 
-cron.schedule("0 0 * * *", () => {
+cron.schedule("* * * * *", () => {
 	console.log("Running scheduled task: deletePastBookings");
 	run();
 });
