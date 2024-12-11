@@ -14,11 +14,15 @@ const run = async () => {
 		today.setHours(0, 0, 0, 0);
 
 		try {
-			// Находим документы с датами в schedule меньше текущей и устанавливаем флаг
+			// Сначала фильтруем документы, у которых hasPastDates отсутствует или false
 			const result = await Photographer.updateMany(
-				{ "schedule.date": { $lt: today } }, // Проверяем наличие прошедших дат
+				{
+					hasPastDates: { $ne: true }, // Проверяем, что флаг не установлен
+					"schedule.date": { $lt: today }, // Только затем проверяем прошедшие даты
+				},
 				{ $set: { hasPastDates: true } } // Устанавливаем общий флаг
 			);
+
 			console.log(
 				`Обновлено ${result.modifiedCount} документов с флагом hasPastDates.`
 			);
