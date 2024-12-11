@@ -28,6 +28,7 @@ const photographerSchema = new mongoose.Schema({
 		{
 			date: { type: Date, required: true },
 			availableSlots: [String],
+			hasPastDates: Boolean,
 		},
 	],
 	paymentDetails: { type: String }, // Новое поле для реквизитов

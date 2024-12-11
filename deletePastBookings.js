@@ -9,29 +9,30 @@ const run = async () => {
 		// Подключение к базе данных
 		await connectToDatabase();
 
-		// Удаление старых бронирований
+		// Установка текущей даты на начало дня
 		const today = new Date();
-		today.setHours(0, 0, 0, 0); // Устанавливаем время на начало дня
+		today.setHours(0, 0, 0, 0);
 
 		try {
-			// Удаляем бронирования, у которых дата меньше текущей
-
+			// Находим документы с датами в schedule меньше текущей и устанавливаем флаг
 			const result = await Photographer.updateMany(
-				{}, // Применяем ко всем документам
+				{ "schedule.date": { $lt: today } }, // Ищем документы, где есть хотя бы одна дата < today
 				{
-					$pull: {
-						schedule: { date: { $lt: today } }, // Удаляем элементы массива с date < today
-					},
+					$set: { hasPastDates: true }, // Устанавливаем флаг
 				}
 			);
-			console.log(`Обновлено ${result.modifiedCount} документов.`);
+
+			console.log(
+				`Обновлено ${result.modifiedCount} документов с флагом hasPastDates.`
+			);
 		} catch (error) {
-			console.error("Ошибка при удалении старых дат из schedule:", error);
-			throw error; // Пробрасываем ошибку дальше, если она произошла
+			console.error("Ошибка при обновлении флага в schedule:", error);
+			throw error; // Пробрасываем ошибку дальше
 		}
-		console.log("Удаление старых бронирований завершено.");
+
+		console.log("Обновление флагов завершено.");
 	} catch (error) {
-		console.error("Ошибка при удалении старых бронирований:", error);
+		console.error("Ошибка при выполнении скрипта:", error);
 	}
 };
 
