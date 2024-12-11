@@ -16,13 +16,8 @@ const run = async () => {
 		try {
 			// Находим документы с датами в schedule меньше текущей и устанавливаем флаг
 			const result = await Photographer.updateMany(
-				{ "schedule.date": { $lt: today } }, // Проверяем наличие элемента с date < today
-				{
-					$set: { "schedule.$[elem].hasPastDates": true }, // Устанавливаем флаг hasPastDates в массиве schedule
-				},
-				{
-					arrayFilters: [{ "elem.date": { $lt: today } }], // Фильтруем элементы массива с date < today
-				}
+				{ "schedule.date": { $lt: today } }, // Проверяем наличие прошедших дат
+				{ $set: { hasPastDates: true } } // Устанавливаем общий флаг
 			);
 			console.log(
 				`Обновлено ${result.modifiedCount} документов с флагом hasPastDates.`
