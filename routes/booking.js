@@ -51,6 +51,7 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/past-dates/:id", async (req, res) => {
+	console.log("MUCHACHUCHA");
 	const { photographerId } = req.params;
 
 	try {
