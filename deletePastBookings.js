@@ -14,24 +14,30 @@ const run = async () => {
 		today.setHours(0, 0, 0, 0);
 
 		try {
-			// Сначала фильтруем документы, у которых hasPastDates отсутствует или false
+			// Удаление всех прошедших дат из schedule.date
 			const result = await Photographer.updateMany(
+				{},
 				{
-					hasPastDates: { $ne: true }, // Проверяем, что флаг не установлен
-					"schedule.date": { $lt: today }, // Только затем проверяем прошедшие даты
-				},
-				{ $set: { hasPastDates: true } } // Устанавливаем общий флаг
+					$pull: {
+						schedule: {
+							date: { $lt: today }, // Удаляем даты меньше сегодняшнего дня
+						},
+					},
+				}
 			);
 
 			console.log(
-				`Обновлено ${result.modifiedCount} документов с флагом hasPastDates.`
+				`Удалено прошедших дат у ${result.modifiedCount} документов.`
 			);
 		} catch (error) {
-			console.error("Ошибка при обновлении флага в schedule:", error);
+			console.error(
+				"Ошибка при удалении прошедших дат из schedule:",
+				error
+			);
 			throw error; // Пробрасываем ошибку дальше
 		}
 
-		console.log("Обновление флагов завершено.");
+		console.log("Удаление прошедших дат завершено.");
 	} catch (error) {
 		console.error("Ошибка при выполнении скрипта:", error);
 	}
