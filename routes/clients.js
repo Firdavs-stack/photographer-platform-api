@@ -42,7 +42,7 @@ const upload = multer({ storage: storage }).fields([
 ]);
 
 // URL для отправки сообщений в Telegram
-const botToken = "7456265736:AAFQDmk4S3uqrOmieU0dcX5VRrHemHE6DG8"; // Укажите ваш токен бота
+const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4"; // Укажите ваш токен бота
 const apiUrl = `https://api.telegram.org/bot${botToken}`;
 
 // Функция для отправки интерфейса фотографа
