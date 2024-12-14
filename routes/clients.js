@@ -14,7 +14,6 @@ const sourceDir = path.resolve(__dirname, "../../.."); // Корневая ди�
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// Переносим тип файла в `req.body.type` для правильной обработки
-		console.log("SOSO", req.query.type);
 		const uploadPath =
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? `${path.resolve(sourceDir, "two2one.uz/images/profile")}`
@@ -196,7 +195,6 @@ router.post("/:id/promote", upload, async (req, res) => {
 				photographer: newPhotographer,
 			});
 		} else if (type === "portfolio") {
-			console.log("MAMASITA");
 			// **2. Добавление фото в портфолио существующего фотографа**
 			const photographer = await Photographer.findById(clientId); // Ищем фотографа по ID (тут используется `clientId` как ID фотографа)
 			if (!photographer) {

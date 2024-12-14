@@ -28,13 +28,11 @@ const router = express.Router();
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// Переносим тип файла в `req.body.type` для правильной обработки
-		console.log("SOSO", req.query.type);
 		const uploadPath =
 			req.query.type === "profile" // Если `type` передан в query-параметрах
 				? `${path.resolve(sourceDir, "two2one.uz/images/profile")}`
 				: `${path.resolve(sourceDir, "two2one.uz/images/portfolio")}`;
 		photoPath = uploadPath;
-		console.log("Выбранный путь:", uploadPath);
 		cb(null, uploadPath);
 	},
 	filename: function (req, file, cb) {
@@ -48,7 +46,6 @@ const upload = multer({ storage: storage });
 // router.use('/photographers', authMiddleware); // Применяем middleware ко всем маршрутам, начинающимся с '/photographers'
 
 router.get("/photographers", async (req, res) => {
-	console.log(req.query);
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 10;
 	const level = req.query.level;
@@ -101,13 +98,11 @@ router.get("/photographers", async (req, res) => {
 			total,
 		});
 	} catch (err) {
-		console.log("SOOOOI");
 		res.status(500).json({ message: "Ошибка сервера" });
 	}
 });
 
 router.delete("photographers/past-dates/:id", async (req, res) => {
-	console.log("MUCHACHUCHA");
 	const { photographerId } = req.params;
 
 	try {
@@ -183,7 +178,6 @@ router.post(
 	"/photographers",
 	upload.single("profilePhoto"),
 	async (req, res) => {
-		console.log(req);
 		try {
 			// Преобразование строки в массив, если это строка
 			const parseArray = (field) =>

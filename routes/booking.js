@@ -31,7 +31,6 @@ router.get("/client/:clientId", async (req, res) => {
 
 // Создать новое бронирование
 router.post("/", async (req, res) => {
-	console.log("REQ", req.body);
 	const { clientId, photographerId, date, timeSlot } = req.body;
 	try {
 		const newBooking = new Booking({
@@ -71,7 +70,6 @@ router.put("/:id/uploadScreenshot", async (req, res) => {
 // Подтвердить бронирование
 // Обновлённая функция для отправки сообщения с кнопкой
 async function sendTelegramMessageWithButton(chatId, message, bookingId) {
-	console.log("ID", bookingId);
 	const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4"; // Ваш токен бота
 	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
