@@ -133,7 +133,7 @@ router.put("/:id/confirm", async (req, res) => {
 		});
 
 		if (!booking) {
-			return res.status(404).json({ message: "Booking not found" });
+			return res.status(404).json({ message: "Booking not found!" });
 		}
 		const { clientId, photographerId } = booking;
 
