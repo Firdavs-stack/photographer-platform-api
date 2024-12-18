@@ -54,6 +54,7 @@ const sendPhotographerInterface = async (chatId) => {
 			[{ text: "📅 Бронирования" }, { text: "⚙️ Настройки" }],
 			[{ text: "🕒 Выбрать временные промежутки" }],
 			[{ text: "💳 Реквизиты" }, { text: "🎟 Ссылка" }],
+			[{ text: "🔍 Поиск клиентов" }],
 		],
 		resize_keyboard: true,
 		one_time_keyboard: false,

@@ -15,6 +15,7 @@ const photographerDefaultCommands = [
 	"🕒 Выбрать временные промежутки",
 	"💳 Реквизиты",
 	"🎟 Ссылка",
+	"🔍 Поиск клиентов",
 ];
 const clientDefaultCommands = [
 	"⚙️ Настройки",
