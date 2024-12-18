@@ -166,7 +166,7 @@ router.post("/vip", async (req, res) => {
 			},
 		});
 	} catch (error) {
-		console.error(error);
+		bot.sendMessage(chatId, error);
 		res.status(500).json({
 			success: false,
 			message: "Server error",
