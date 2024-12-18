@@ -118,6 +118,39 @@ router.get("/:id", async (req, res) => {
 	}
 });
 
+router.post("/vip", async (req, res) => {
+	try {
+		const { clientId } = req.body; // Получаем clientId из тела запроса
+
+		if (!clientId) {
+			return res
+				.status(400)
+				.json({ success: false, message: "Client ID is required." });
+		}
+
+		// Ищем клиента по ID
+		const client = await Client.findById(clientId);
+
+		if (!client) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Client not found." });
+		}
+
+		// Обновляем статус клиента на VIP
+		client.status = "vip";
+		await client.save();
+
+		return res.status(200).json({
+			success: true,
+			client: { name: client.name, phone: client.phone },
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ success: false, message: "Server error" });
+	}
+});
+
 // Маршрут для промоушена клиента в фотографа и загрузки профильного фото
 // Основной обработчик POST-запроса для промоушена клиента
 router.post("/:id/promote", upload, async (req, res) => {
