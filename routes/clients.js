@@ -120,12 +120,13 @@ router.get("/:id", async (req, res) => {
 
 router.post("/vip", async (req, res) => {
 	try {
-		const { clientId } = req.body; // Получаем clientId из тела запроса
+		const { clientId, photographerId } = req.body; // Получаем clientId и photographerId из тела запроса
 
-		if (!clientId) {
-			return res
-				.status(400)
-				.json({ success: false, message: "Client ID is required." });
+		if (!clientId || !photographerId) {
+			return res.status(400).json({
+				success: false,
+				message: "Client ID and Photographer ID are required.",
+			});
 		}
 
 		// Ищем клиента по ID
@@ -137,17 +138,40 @@ router.post("/vip", async (req, res) => {
 				.json({ success: false, message: "Client not found." });
 		}
 
-		// Обновляем статус клиента на VIP
-		client.status = "vip";
+		// Проверяем, есть ли уже фотограф в списке photographers клиента
+		const photographerIndex = client.photographers.findIndex(
+			(p) => p.photographerId.toString() === photographerId
+		);
+
+		if (photographerIndex === -1) {
+			// Если фотографа нет, добавляем его с статусом VIP
+			client.photographers.push({
+				photographerId,
+				status: "vip",
+			});
+		} else {
+			// Если фотограф уже есть, обновляем его статус
+			client.photographers[photographerIndex].status = "vip";
+		}
+
 		await client.save();
 
 		return res.status(200).json({
 			success: true,
-			client: { name: client.name, phone: client.phone },
+			message: "Client status updated to VIP for the photographer.",
+			client: {
+				name: client.name,
+				phone: client.phone,
+				photographers: client.photographers, // Отправляем список фотографов с их статусами
+			},
 		});
 	} catch (error) {
 		console.error(error);
-		res.status(500).json({ success: false, message: "Server error" });
+		res.status(500).json({
+			success: false,
+			message: "Server error",
+			error,
+		});
 	}
 });
 
