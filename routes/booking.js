@@ -46,6 +46,7 @@ router.post("/", async (req, res) => {
 		if (!photographer) {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
+
 		// Проверяем VIP-статус клиента для данного фотографа
 		const isVip = client.photographers.some(
 			(photographer) =>
@@ -92,9 +93,9 @@ router.post("/", async (req, res) => {
 
 		// Сохраняем бронирование
 		await booking.save();
-
+		console.log(client.chatId, photographer.chatId);
 		// Уведомляем клиента
-		if (client.telegramId) {
+		if (client.chatId) {
 			const clientMessage = isVip
 				? `Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
 				  `Детали бронирования:\n` +
@@ -107,7 +108,7 @@ router.post("/", async (req, res) => {
 		}
 
 		// Уведомляем фотографа
-		if (photographer.telegramId) {
+		if (photographer.chatId) {
 			const photographerMessage =
 				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
 				`Клиент: ${client.name}\n` +
