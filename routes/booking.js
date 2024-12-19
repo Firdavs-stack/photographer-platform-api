@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
-
+		console.log(isVip);
 		// Проверяем VIP-статус клиента для данного фотографа
 		if (isVip) {
 			console.log("JJPJP");
