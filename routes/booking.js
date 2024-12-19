@@ -32,7 +32,7 @@ router.get("/client/:clientId", async (req, res) => {
 
 // Создать новое бронирование
 router.post("/", async (req, res) => {
-	const { clientId, photographerId, date, timeSlot } = req.body;
+	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
 
 	try {
 		// Получаем информацию о клиенте
@@ -43,9 +43,6 @@ router.post("/", async (req, res) => {
 		}
 
 		// Проверяем VIP-статус клиента для данного фотографа
-		const isVip = client.photographers.some(
-			(photographer) => photographer.photographerId === id
-		);
 		if (isVip) {
 			console.log("JJPJP");
 			// Если клиент VIP, бронирование создаётся без проверки доступности и без предоплаты
