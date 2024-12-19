@@ -91,6 +91,8 @@ router.post("/", async (req, res) => {
 			});
 		}
 
+		console.log(client?.telegramId);
+		console.log(photographer?.telegramId);
 		// Сохраняем бронирование
 		await booking.save();
 		// Уведомляем клиента
