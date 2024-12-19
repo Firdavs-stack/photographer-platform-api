@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
 		}
 
 		// Проверяем VIP-статус клиента для данного фотографа
-		const isVip = clientResponse.data.photographers.some(
+		const isVip = client.photographers.some(
 			(photographer) => photographer.photographerId === id
 		);
 		if (isVip) {
