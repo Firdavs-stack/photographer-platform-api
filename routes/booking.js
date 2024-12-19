@@ -36,6 +36,7 @@ router.post("/", async (req, res) => {
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
+		console.log(client);
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
