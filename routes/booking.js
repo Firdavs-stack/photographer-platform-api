@@ -32,79 +32,105 @@ router.get("/client/:clientId", async (req, res) => {
 
 // Создать новое бронирование
 router.post("/", async (req, res) => {
-	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
+	const { clientId, photographerId, date, timeSlot } = req.body;
 
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
-		console.log(isVip);
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
-		console.log(isVip);
-		// Проверяем VIP-статус клиента для данного фотографа
-		if (isVip) {
-			console.log("JJPJP");
-			// Если клиент VIP, бронирование создаётся без проверки доступности и без предоплаты
-			const vipBooking = new Booking({
-				clientId,
-				photographerId,
-				date,
-				timeSlot: timeSlot || "Any", // Если слот не указан, указываем "Any"
-				status: "awaiting_confirmation", // Для VIP-клиента статус будет "awaiting_confirmation"
-				prepayment: 0, // Для VIP клиентов предоплата не нужна
-			});
-			await vipBooking.save();
 
-			return res.status(201).json({
-				message: "Бронирование отправлено на рассмотрение фотографу.",
-				booking: vipBooking,
-			});
-		}
-
-		// Получаем расписание фотографа для обычных клиентов
+		// Получаем информацию о фотографе
 		const photographer = await Photographer.findById(photographerId);
 		if (!photographer) {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 
-		// Проверяем, доступен ли указанный слот для обычных клиентов
-		const isSlotAvailable = photographer.schedule.some(
-			(slot) =>
-				slot.date === date && slot.availableSlots.includes(timeSlot)
+		// Проверяем VIP-статус клиента для данного фотографа
+		const isVip = client.photographers.some(
+			(photographer) =>
+				photographer.photographerId.toString() === photographerId
 		);
 
-		if (!isSlotAvailable) {
-			return res.status(400).json({
-				message: "Выбранное время недоступно для бронирования.",
+		let booking;
+		if (isVip) {
+			// Создаём бронирование для VIP-клиента
+			booking = new Booking({
+				clientId,
+				photographerId,
+				date,
+				timeSlot: timeSlot || "Any", // Если слот не указан, указываем "Any"
+				status: "awaiting_confirmation", // Для VIP-клиента статус "awaiting_confirmation"
+				prepayment: 0, // Для VIP клиентов предоплата не нужна
+			});
+		} else {
+			// Проверяем, доступен ли указанный слот для обычных клиентов
+			const isSlotAvailable =
+				photographer.schedule &&
+				photographer.schedule.some(
+					(slot) =>
+						slot.date === date &&
+						slot.availableSlots.includes(timeSlot)
+				);
+
+			if (!isSlotAvailable) {
+				return res.status(400).json({
+					message: "Выбранное время недоступно для бронирования.",
+				});
+			}
+
+			// Создаём бронирование для обычного клиента с предоплатой
+			booking = new Booking({
+				clientId,
+				photographerId,
+				date,
+				timeSlot,
+				status: "awaiting_prepayment", // Требуется предоплата
+				prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов
 			});
 		}
 
-		// Создаём бронирование для обычного клиента с предоплатой
-		const booking = new Booking({
-			clientId,
-			photographerId,
-			date,
-			timeSlot,
-			status: "awaiting_prepayment", // Требуется предоплата
-			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
-		});
+		// Сохраняем бронирование
 		await booking.save();
 
+		// Уведомляем клиента
+		if (client.chatId) {
+			const clientMessage = isVip
+				? `Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
+				  `Детали бронирования:\n` +
+				  `Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`
+				: `Ваше бронирование создано!\n\n` +
+				  `Детали бронирования:\n` +
+				  `Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+				  `Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
+			await bot.sendMessage(client.chatId, clientMessage);
+		}
+
+		// Уведомляем фотографа
+		if (photographer.chatId) {
+			const photographerMessage =
+				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+				`Клиент: ${client.name}\n` +
+				`Дата: ${date}\n` +
+				`Время: ${timeSlot}\n` +
+				`Статус: ${booking.status}`;
+			await bot.sendMessage(photographer.chatId, photographerMessage);
+		}
+
 		res.status(201).json({
-			message:
-				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
+			message: isVip
+				? "Бронирование отправлено на рассмотрение фотографу."
+				: "Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
 			booking,
 		});
 	} catch (error) {
 		console.error("Ошибка при создании бронирования:", error);
 		res.status(500).json({
 			error: "Ошибка сервера при создании бронирования.",
-			details: error,
 		});
 	}
 });
-
 // Загрузить скриншот оплаты и обновить статус на "awaiting_confirmation"
 router.put("/:id/uploadScreenshot", async (req, res) => {
 	const { id } = req.params;
