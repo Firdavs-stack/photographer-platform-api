@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
 		}
 
 		// Проверяем VIP-статус клиента для данного фотографа
-		const isVip = client.vipPhotographers.includes(photographerId);
+		const isVip = client.photographers.includes(photographerId);
 
 		if (isVip) {
 			// Если клиент VIP, бронирование создаётся без проверки доступности
