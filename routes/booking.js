@@ -90,38 +90,6 @@ router.post("/", async (req, res) => {
 				prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов
 			});
 		}
-
-		console.log(client?.telegramId);
-		console.log(photographer?.telegramId);
-		// Сохраняем бронирование
-		await booking.save();
-		// Уведомляем клиента
-		if (client?.telegramId) {
-			sendTelegramMessage(
-				client?.telegramId,
-				isVip
-					? `Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
-							`Детали бронирования:\n` +
-							`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`
-					: `Ваше бронирование создано!\n\n` +
-							`Детали бронирования:\n` +
-							`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
-							`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`
-			);
-		}
-
-		// Уведомляем фотографа
-		if (photographer?.telegramId) {
-			sendTelegramMessage(
-				photographer?.telegramId,
-				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
-					`Клиент: ${client.name}\n` +
-					`Дата: ${date}\n` +
-					`Время: ${timeSlot}\n` +
-					`Статус: ${booking.status}`
-			);
-		}
-
 		res.status(201).json({
 			message: isVip
 				? "Бронирование отправлено на рассмотрение фотографу."
