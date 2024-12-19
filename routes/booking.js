@@ -37,14 +37,11 @@ router.post("/", async (req, res) => {
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
-		console.log(isVip);
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
-		console.log(isVip);
 		// Проверяем VIP-статус клиента для данного фотографа
 		if (isVip) {
-			console.log("JJPJP");
 			// Если клиент VIP, бронирование создаётся без проверки доступности и без предоплаты
 			const vipBooking = new Booking({
 				clientId,
@@ -126,7 +123,7 @@ router.put("/:id/uploadScreenshot", async (req, res) => {
 // Подтвердить бронирование
 // Обновлённая функция для отправки сообщения с кнопкой
 async function sendTelegramMessageWithButton(chatId, message, bookingId) {
-	const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4"; // Ваш токен бота
+	const botToken = ""; // Ваш токен бота
 	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
 	const response = await fetch(url, {
@@ -158,7 +155,7 @@ async function sendTelegramMessageWithButton(chatId, message, bookingId) {
 }
 
 async function sendTelegramMessage(chatId, message) {
-	const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4";
+	const botToken = "";
 	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
 	const response = await fetch(url, {
