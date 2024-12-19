@@ -93,7 +93,7 @@ router.post("/", async (req, res) => {
 
 		// Сохраняем бронирование
 		await booking.save();
-		console.log(client.chatId, photographer.chatId);
+		console.log(client, photographer);
 		// Уведомляем клиента
 		if (client.chatId) {
 			const clientMessage = isVip
