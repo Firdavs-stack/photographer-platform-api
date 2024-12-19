@@ -91,6 +91,20 @@ router.post("/", async (req, res) => {
 		});
 		await booking.save();
 
+		if (client?.telegramId) {
+			sendTelegramMessage(
+				client.telegramId,
+				isVip
+					? `Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
+							`Детали бронирования:\n` +
+							`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`
+					: `Ваше бронирование создано!\n\n` +
+							`Детали бронирования:\n` +
+							`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+							`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`
+			);
+		}
+
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
