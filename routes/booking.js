@@ -44,13 +44,14 @@ router.post("/", async (req, res) => {
 		const isVip = client.photographers.includes(photographerId);
 
 		if (isVip) {
-			// Если клиент VIP, бронирование создаётся без проверки доступности
+			// Если клиент VIP, бронирование создаётся без проверки доступности и без предоплаты
 			const vipBooking = new Booking({
 				clientId,
 				photographerId,
 				date,
 				timeSlot: timeSlot || "Any", // Если слот не указан, указываем "Any"
-				status: "pending", // Ожидает подтверждения от фотографа
+				status: "awaiting_confirmation", // Для VIP-клиента статус будет "awaiting_confirmation"
+				prepayment: 0, // Для VIP клиентов предоплата не нужна
 			});
 			await vipBooking.save();
 
@@ -60,13 +61,13 @@ router.post("/", async (req, res) => {
 			});
 		}
 
-		// Получаем расписание фотографа
+		// Получаем расписание фотографа для обычных клиентов
 		const photographer = await Photographer.findById(photographerId);
 		if (!photographer) {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 
-		// Проверяем, доступен ли указанный слот
+		// Проверяем, доступен ли указанный слот для обычных клиентов
 		const isSlotAvailable = photographer.schedule.some(
 			(slot) =>
 				slot.date === date && slot.availableSlots.includes(timeSlot)
@@ -78,13 +79,14 @@ router.post("/", async (req, res) => {
 			});
 		}
 
-		// Создаём бронирование для обычного клиента
+		// Создаём бронирование для обычного клиента с предоплатой
 		const booking = new Booking({
 			clientId,
 			photographerId,
 			date,
 			timeSlot,
 			status: "awaiting_prepayment", // Требуется предоплата
+			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
 		});
 		await booking.save();
 
