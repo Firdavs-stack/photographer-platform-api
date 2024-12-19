@@ -93,9 +93,8 @@ router.post("/", async (req, res) => {
 
 		// Сохраняем бронирование
 		await booking.save();
-		console.log(client, photographer);
 		// Уведомляем клиента
-		if (client.chatId) {
+		if (client?.telegramId) {
 			const clientMessage = isVip
 				? `Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
 				  `Детали бронирования:\n` +
@@ -108,7 +107,7 @@ router.post("/", async (req, res) => {
 		}
 
 		// Уведомляем фотографа
-		if (photographer.chatId) {
+		if (photographer?.telegramId) {
 			const photographerMessage =
 				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
 				`Клиент: ${client.name}\n` +
