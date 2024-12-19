@@ -90,7 +90,7 @@ router.post("/", async (req, res) => {
 			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
 		});
 		await booking.save();
-
+		console.log(client?.telegramId);
 		if (client?.telegramId) {
 			sendTelegramMessage(
 				client.telegramId,
