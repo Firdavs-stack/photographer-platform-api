@@ -53,6 +53,20 @@ router.post("/", async (req, res) => {
 			});
 			await vipBooking.save();
 
+			const clientMessage =
+				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
+				`Детали бронирования:\n` +
+				`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`;
+			const photographerMessage =
+				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+				`Клиент: ${client.name}\n` +
+				`Дата: ${date}\n` +
+				`Время: ${timeSlot}\n` +
+				`Статус: ${booking.status}`;
+
+			sendTelegramMessage(client.telegramId, clientMessage);
+			sendTelegramMessage(photographer.telegramId, photographerMessage);
+
 			return res.status(201).json({
 				message: "Бронирование отправлено на рассмотрение фотографу.",
 				booking: vipBooking,
@@ -87,7 +101,22 @@ router.post("/", async (req, res) => {
 			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
 		});
 		await booking.save();
-		console.log(photographer, client);
+
+		const clientMessage =
+			`Ваше бронирование создано!\n\n` +
+			`Детали бронирования:\n` +
+			`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
+		const photographerMessage =
+			`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+			`Клиент: ${client.name}\n` +
+			`Дата: ${date}\n` +
+			`Время: ${timeSlot}\n` +
+			`Статус: ${booking.status}`;
+
+		sendTelegramMessage(client.telegramId, clientMessage);
+		sendTelegramMessage(photographer.telegramId, photographerMessage);
+
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
