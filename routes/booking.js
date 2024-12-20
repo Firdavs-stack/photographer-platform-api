@@ -53,6 +53,22 @@ router.post("/", async (req, res) => {
 			});
 			await vipBooking.save();
 
+			const clientMessage =
+				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
+				`Детали бронирования:\n` +
+				`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`;
+			const photographerMessage =
+				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+				`Клиент: ${client.name}\n` +
+				`Дата: ${date}\n` +
+				`Время: ${timeSlot}\n` +
+				`Статус: ${booking.status}`;
+
+			sendTelegramMessage(client.data.telegramId, clientMessage);
+			sendTelegramMessage(
+				photographer.data.telegramId,
+				photographerMessage
+			);
 			return res.status(201).json({
 				message: "Бронирование отправлено на рассмотрение фотографу.",
 				booking: vipBooking,
@@ -88,6 +104,19 @@ router.post("/", async (req, res) => {
 		});
 		await booking.save();
 
+		const clientMessage =
+			`Ваше бронирование создано!\n\n` +
+			`Детали бронирования:\n` +
+			`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
+		const photographerMessage =
+			`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+			`Клиент: ${client.name}\n` +
+			`Дата: ${date}\n` +
+			`Время: ${timeSlot}\n` +
+			`Статус: ${booking.status}`;
+		sendTelegramMessage(client.data.telegramId, clientMessage);
+		sendTelegramMessage(photographer.data.telegramId, photographerMessage);
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
@@ -123,7 +152,7 @@ router.put("/:id/uploadScreenshot", async (req, res) => {
 // Подтвердить бронирование
 // Обновлённая функция для отправки сообщения с кнопкой
 async function sendTelegramMessageWithButton(chatId, message, bookingId) {
-	const botToken = ""; // Ваш токен бота
+	const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4"; // Ваш токен бота
 	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
 	const response = await fetch(url, {
@@ -155,7 +184,7 @@ async function sendTelegramMessageWithButton(chatId, message, bookingId) {
 }
 
 async function sendTelegramMessage(chatId, message) {
-	const botToken = "";
+	const botToken = "7647751844:AAGSToi5DCbuRGAA156G52obCl3FLHBn5j4";
 	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
 	const response = await fetch(url, {
