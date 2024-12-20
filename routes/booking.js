@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
 				`Детали бронирования:\n` +
 				`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
 			const photographerMessage =
-				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+				`Новое брониров	ание ${isVip ? "от VIP-клиента" : ""}!\n\n` +
 				`Клиент: ${client.name}\n` +
 				`Дата: ${date}\n` +
 				`Время: ${timeSlot}\n` +
@@ -103,7 +103,7 @@ router.post("/", async (req, res) => {
 		const clientMessage =
 			`Ваше бронирование создано!\n\n` +
 			`Детали бронирования:\n` +
-			`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+			`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
 			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
 		const photographerMessage =
 			`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
