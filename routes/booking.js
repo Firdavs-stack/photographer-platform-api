@@ -70,7 +70,6 @@ router.post("/", async (req, res) => {
 			const slotDate = new Date(slot.date).toISOString().split("T")[0]; // Преобразуем в строку "YYYY-MM-DD"
 			return slotDate === date && slot.availableSlots.includes(timeSlot);
 		});
-		console.log(photographer, isSlotAvailable, date);
 
 		if (!isSlotAvailable) {
 			return res.status(400).json({
@@ -89,7 +88,6 @@ router.post("/", async (req, res) => {
 		});
 		await booking.save();
 
-		console.l0g("SIIU");
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
