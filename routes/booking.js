@@ -58,6 +58,7 @@ router.post("/", async (req, res) => {
 				booking: vipBooking,
 			});
 		}
+		console.log(photographer);
 
 		// Получаем расписание фотографа для обычных клиентов
 		const photographer = await Photographer.findById(photographerId);
