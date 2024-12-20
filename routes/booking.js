@@ -66,10 +66,10 @@ router.post("/", async (req, res) => {
 		}
 
 		// Проверяем, доступен ли указанный слот для обычных клиентов
-		const isSlotAvailable = photographer.schedule.some(
-			(slot) =>
-				slot.date === date && slot.availableSlots.includes(timeSlot)
-		);
+		const isSlotAvailable = photographer.schedule.some((slot) => {
+			const slotDate = new Date(slot.date).toISOString().split("T")[0]; // Преобразуем в строку "YYYY-MM-DD"
+			return slotDate === date && slot.availableSlots.includes(timeSlot);
+		});
 		console.log(photographer, isSlotAvailable, date);
 
 		if (!isSlotAvailable) {
