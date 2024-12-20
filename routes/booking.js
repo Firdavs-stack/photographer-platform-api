@@ -35,8 +35,6 @@ router.post("/", async (req, res) => {
 	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
 
 	try {
-		const escapeMarkdown = (text) =>
-			text.replace(/([*_`\[\]()~>#+=|{}.!-])/g, "\\$1");
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
 		const photographer = await Photographer.findById(photographerId);
@@ -62,17 +60,13 @@ router.post("/", async (req, res) => {
 			const clientMessage =
 				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
 				`Детали бронирования:\n` +
-				`Фотограф: ${escapeMarkdown(
-					photographer.firstName
-				)}\nДата: ${escapeMarkdown(date)}\nВремя: ${escapeMarkdown(
-					timeSlot
-				)}`;
+				`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
 			const photographerMessage =
 				`Новое брониров	ание ${isVip ? "от VIP-клиента" : ""}!\n\n` +
-				`Клиент: ${escapeMarkdown(client.name)}\n` +
-				`Дата: ${escapeMarkdown(date)}\n` +
-				`Время: ${escapeMarkdown(timeSlot)}\n` +
-				`Статус: ${escapeMarkdown(booking.status)}`;
+				`Клиент: ${client.name}\n` +
+				`Дата: ${date}\n` +
+				`Время: ${timeSlot}\n` +
+				`Статус: ${booking.status}`;
 
 			sendTelegramMessage(client.telegramId, clientMessage);
 			sendTelegramMessage(photographer.telegramId, photographerMessage);
@@ -109,17 +103,14 @@ router.post("/", async (req, res) => {
 		const clientMessage =
 			`Ваше бронирование создано!\n\n` +
 			`Детали бронирования:\n` +
-			`Фотограф: ${escapeMarkdown(photographer.firstName)}\n` +
-			`Дата: ${escapeMarkdown(date)}\n` +
-			`Время: ${escapeMarkdown(timeSlot)}\n\n` +
+			`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
 			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
-
 		const photographerMessage =
 			`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
-			`Клиент: ${escapeMarkdown(client.name)}\n` +
-			`Дата: ${escapeMarkdown(date)}\n` +
-			`Время: ${escapeMarkdown(timeSlot)}\n` +
-			`Статус: ${escapeMarkdown(booking.status)}`;
+			`Клиент: ${client.name}\n` +
+			`Дата: ${date}\n` +
+			`Время: ${timeSlot}\n` +
+			`Статус: ${booking.status}`;
 
 		sendTelegramMessage(client.telegramId, clientMessage);
 		sendTelegramMessage(photographer.telegramId, photographerMessage);
@@ -200,7 +191,6 @@ async function sendTelegramMessage(chatId, message) {
 		body: JSON.stringify({
 			chat_id: chatId,
 			text: message,
-			parse_mode: "Markdown",
 		}),
 	});
 
