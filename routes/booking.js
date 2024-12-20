@@ -37,6 +37,10 @@ router.post("/", async (req, res) => {
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
+		const photographer = await Photographer.findById(photographerId);
+		if (!photographer) {
+			return res.status(404).json({ error: "Фотограф не найден." });
+		}
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
@@ -56,7 +60,7 @@ router.post("/", async (req, res) => {
 			const clientMessage =
 				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
 				`Детали бронирования:\n` +
-				`Фотограф: ${photographer.name}\nДата: ${date}\nВремя: ${timeSlot}`;
+				`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
 			const photographerMessage =
 				`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
 				`Клиент: ${client.name}\n` +
@@ -71,12 +75,6 @@ router.post("/", async (req, res) => {
 				message: "Бронирование отправлено на рассмотрение фотографу.",
 				booking: vipBooking,
 			});
-		}
-
-		// Получаем расписание фотографа для обычных клиентов
-		const photographer = await Photographer.findById(photographerId);
-		if (!photographer) {
-			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 
 		// Проверяем, доступен ли указанный слот для обычных клиентов
