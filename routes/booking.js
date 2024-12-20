@@ -87,7 +87,7 @@ router.post("/", async (req, res) => {
 			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
 		});
 		await booking.save();
-
+		console.log(photographer, client);
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
