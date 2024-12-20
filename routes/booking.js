@@ -96,7 +96,7 @@ router.post("/", async (req, res) => {
 			booking,
 		});
 	} catch (error) {
-		console.error("Ошибка при создании бронирования:", error);
+		console.log("Ошибка при создании бронирования:", error);
 		res.status(500).json({
 			error: "Ошибка сервера при создании бронирования.",
 			details: error,
