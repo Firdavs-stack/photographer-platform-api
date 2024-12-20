@@ -65,12 +65,12 @@ router.post("/", async (req, res) => {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 
-		console.log(photographer, timeSlot);
 		// Проверяем, доступен ли указанный слот для обычных клиентов
 		const isSlotAvailable = photographer.schedule.some(
 			(slot) =>
 				slot.date === date && slot.availableSlots.includes(timeSlot)
 		);
+		console.log(photographer, isSlotAvailable);
 
 		if (!isSlotAvailable) {
 			return res.status(400).json({
