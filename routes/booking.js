@@ -89,6 +89,7 @@ router.post("/", async (req, res) => {
 		});
 		await booking.save();
 
+		console.l0g("SIIU");
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
