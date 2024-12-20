@@ -58,7 +58,6 @@ router.post("/", async (req, res) => {
 				booking: vipBooking,
 			});
 		}
-		console.log(photographer);
 
 		// Получаем расписание фотографа для обычных клиентов
 		const photographer = await Photographer.findById(photographerId);
@@ -66,6 +65,7 @@ router.post("/", async (req, res) => {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 
+		console.log(photographer, isVip);
 		// Проверяем, доступен ли указанный слот для обычных клиентов
 		const isSlotAvailable = photographer.schedule.some(
 			(slot) =>
