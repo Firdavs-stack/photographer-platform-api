@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
 			(slot) =>
 				slot.date === date && slot.availableSlots.includes(timeSlot)
 		);
-		console.log(photographer, isSlotAvailable);
+		console.log(photographer, isSlotAvailable, date);
 
 		if (!isSlotAvailable) {
 			return res.status(400).json({
