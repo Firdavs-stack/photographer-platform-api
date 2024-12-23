@@ -147,6 +147,33 @@ router.put("/:id/uploadScreenshot", async (req, res) => {
 	}
 });
 
+router.delete("/:bookingId", async (req, res) => {
+	const { bookingId } = req.params;
+
+	try {
+		// Пытаемся найти бронирование по ID
+		const booking = await Booking.findById(bookingId);
+
+		if (!booking) {
+			return res.status(404).json({ message: "Бронирование не найдено" });
+		}
+
+		// Помечаем бронирование как отменённое
+		booking.status = "cancelled";
+		await booking.save();
+
+		// Отправляем ответ с успешным статусом
+		return res
+			.status(200)
+			.json({ message: "Бронирование отменено успешно" });
+	} catch (error) {
+		console.error("Ошибка при отмене бронирования:", error);
+		return res
+			.status(500)
+			.json({ message: "Ошибка сервера при отмене бронирования" });
+	}
+});
+
 // Подтвердить бронирование
 // Обновлённая функция для отправки сообщения с кнопкой
 async function sendTelegramMessageWithButton(chatId, message, bookingId) {
