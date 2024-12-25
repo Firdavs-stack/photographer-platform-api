@@ -105,15 +105,8 @@ router.post("/", async (req, res) => {
 			`Детали бронирования:\n` +
 			`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
 			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
-		const photographerMessage =
-			`Новое бронирование ${isVip ? "от VIP-клиента" : ""}!\n\n` +
-			`Клиент: ${client.name}\n` +
-			`Дата: ${date}\n` +
-			`Время: ${timeSlot}\n` +
-			`Статус: ${booking.status}`;
 
 		sendTelegramMessage(client.telegramId, clientMessage);
-		sendTelegramMessage(photographer.telegramId, photographerMessage);
 
 		res.status(201).json({
 			message:
