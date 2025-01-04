@@ -65,8 +65,7 @@ router.post("/", async (req, res) => {
 				`Новое брониров	ание ${isVip ? "от VIP-клиента" : ""}!\n\n` +
 				`Клиент: ${client.name}\n` +
 				`Дата: ${date}\n` +
-				`Время: ${timeSlot}\n` +
-				`Статус: ${booking.status}`;
+				`Время: ${timeSlot}\n`;
 
 			sendTelegramMessage(client.telegramId, clientMessage);
 			sendTelegramMessage(photographer.telegramId, photographerMessage);
