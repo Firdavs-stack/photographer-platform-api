@@ -34,6 +34,7 @@ router.get("/client/:clientId", async (req, res) => {
 router.post("/", async (req, res) => {
 	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
 
+	console.log(clientId, photographerId, date, timeSlot, isVip);
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
