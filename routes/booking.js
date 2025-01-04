@@ -61,9 +61,15 @@ router.post("/", async (req, res) => {
 				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
 				`Детали бронирования:\n` +
 				`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
+			const photographerMessage =
+				`Новое брониров	ание ${isVip ? "от VIP-клиента" : ""}!\n\n` +
+				`Клиент: ${client.name}\n` +
+				`Дата: ${date}\n` +
+				`Время: ${timeSlot}\n` +
+				`Статус: ${booking.status}`;
 
 			sendTelegramMessage(client.telegramId, clientMessage);
-			// sendTelegramMessage(photographer.telegramId, photographerMessage);
+			sendTelegramMessage(photographer.telegramId, photographerMessage);
 
 			return res.status(201).json({
 				message: "Бронирование отправлено на рассмотрение фотографу.",
