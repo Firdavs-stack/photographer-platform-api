@@ -95,7 +95,7 @@ router.post("/", async (req, res) => {
 						.padStart(2, "0")}:00`
 				);
 			}
-			console.log(`${requestedSlots}`);
+			console.log(`${slotDate} ${date}`);
 			// Проверяем, что все интервалы из диапазона содержатся в availableSlots
 			return (
 				slotDate === date &&
