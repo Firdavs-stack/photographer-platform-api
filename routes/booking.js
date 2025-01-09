@@ -80,7 +80,29 @@ router.post("/", async (req, res) => {
 		// Проверяем, доступен ли указанный слот для обычных клиентов
 		const isSlotAvailable = photographer.schedule.some((slot) => {
 			const slotDate = new Date(slot.date).toISOString().split("T")[0]; // Преобразуем в строку "YYYY-MM-DD"
-			return slotDate === date && slot.availableSlots.includes(timeSlot);
+
+			// Разделяем диапазон времени на отдельные интервалы
+			const [startTime, endTime] = timeSlot.split("-");
+			const startHour = parseInt(startTime.split(":")[0], 10);
+			const endHour = parseInt(endTime.split(":")[0], 10);
+
+			// Генерируем часовые интервалы из диапазона
+			const requestedSlots = [];
+			for (let hour = startHour; hour < endHour; hour++) {
+				requestedSlots.push(
+					`${hour.toString().padStart(2, "0")}:00-${(hour + 1)
+						.toString()
+						.padStart(2, "0")}:00`
+				);
+			}
+
+			// Проверяем, что все интервалы из диапазона содержатся в availableSlots
+			return (
+				slotDate === date &&
+				requestedSlots.every((requestedSlot) =>
+					slot.availableSlots.includes(requestedSlot)
+				)
+			);
 		});
 
 		if (!isSlotAvailable) {
@@ -88,7 +110,6 @@ router.post("/", async (req, res) => {
 				message: "Выбранное время недоступно для бронирования.",
 			});
 		}
-
 		// Создаём бронирование для обычного клиента с предоплатой
 		const booking = new Booking({
 			clientId,
