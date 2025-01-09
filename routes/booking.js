@@ -104,13 +104,14 @@ router.post("/", async (req, res) => {
 				)
 			);
 		});
+		console.log(isSlotAvailable);
 
-		if (isSlotAvailable) {
+		if (!isSlotAvailable) {
 			return res.status(400).json({
 				message: "Выбранное время недоступно для бронирования.",
 			});
 		}
-		await Booking.save();
+		await booking.save();
 
 		const clientMessage =
 			`Ваше бронирование создано!\n\n` +
@@ -123,6 +124,7 @@ router.post("/", async (req, res) => {
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
+			booking,
 		});
 	} catch (error) {
 		console.log("Ошибка при создании бронирования:", error);
