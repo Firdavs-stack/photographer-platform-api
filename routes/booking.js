@@ -111,7 +111,7 @@ router.post("/", async (req, res) => {
 			photographerId,
 			date,
 			timeSlot,
-			status: "pending",
+			status: "awaiting_confirmation",
 			prepayment: 1000, // Предоплата для обычных клиентов
 		});
 
