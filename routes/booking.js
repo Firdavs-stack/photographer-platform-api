@@ -105,7 +105,7 @@ router.post("/", async (req, res) => {
 			);
 		});
 
-		if (!isSlotAvailable) {
+		if (isSlotAvailable) {
 			return res.status(400).json({
 				message: "Выбранное время недоступно для бронирования.",
 			});
