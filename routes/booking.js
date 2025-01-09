@@ -35,38 +35,36 @@ router.post("/", async (req, res) => {
 	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
 
 	try {
-		// Получаем информацию о клиенте
+		// Получаем информацию о клиенте и фотографе
 		const client = await Client.findById(clientId);
 		const photographer = await Photographer.findById(photographerId);
+
 		if (!photographer) {
 			return res.status(404).json({ error: "Фотограф не найден." });
 		}
 		if (!client) {
 			return res.status(404).json({ error: "Клиент не найден." });
 		}
-		// Проверяем VIP-статус клиента для данного фотографа
+
+		// Логика для VIP-клиента
 		if (isVip) {
-			// Если клиент VIP, бронирование создаётся без проверки доступности и без предоплаты
 			const vipBooking = new Booking({
 				clientId,
 				photographerId,
 				date,
-				timeSlot: timeSlot || "Any", // Если слот не указан, указываем "Any"
-				status: "awaiting_confirmation", // Для VIP-клиента статус будет "awaiting_confirmation"
-				prepayment: 0, // Для VIP клиентов предоплата не нужна
+				timeSlot: timeSlot || "Any",
+				status: "awaiting_confirmation",
+				prepayment: 0,
 			});
 			await vipBooking.save();
 
 			const clientMessage =
 				`Ваше бронирование отправлено фотографу на подтверждение.\n\n` +
-				`Детали бронирования:\n` +
-				`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
+				`Детали бронирования:\nФотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}`;
+
 			const photographerMessage =
-				`Новое брониров	ание ${isVip ? "от VIP-клиента" : ""}!\n\n` +
-				`Клиент: ${client.name}\n` +
-				`Дата: ${date}\n` +
-				`Время: ${timeSlot}\n` +
-				`Статус: ${booking.status}`;
+				`Новое бронирование от VIP-клиента!\n\n` +
+				`Клиент: ${client.name}\nДата: ${date}\nВремя: ${timeSlot}\nСтатус: awaiting_confirmation`;
 
 			sendTelegramMessage(client.telegramId, clientMessage);
 			sendTelegramMessage(photographer.telegramId, photographerMessage);
@@ -77,16 +75,13 @@ router.post("/", async (req, res) => {
 			});
 		}
 
-		// Проверяем, доступен ли указанный слот для обычных клиентов
+		// Проверяем доступность слота для обычных клиентов
 		const isSlotAvailable = photographer.schedule.some((slot) => {
-			const slotDate = new Date(slot.date).toISOString().split("T")[0]; // Преобразуем в строку "YYYY-MM-DD"
-
-			// Разделяем диапазон времени на отдельные интервалы
+			const slotDate = new Date(slot.date).toISOString().split("T")[0];
 			const [startTime, endTime] = timeSlot.split("-");
 			const startHour = parseInt(startTime.split(":")[0], 10);
 			const endHour = parseInt(endTime.split(":")[0], 10);
 
-			// Генерируем часовые интервалы из диапазона
 			const requestedSlots = [];
 			for (let hour = startHour; hour < endHour; hour++) {
 				requestedSlots.push(
@@ -96,7 +91,6 @@ router.post("/", async (req, res) => {
 				);
 			}
 
-			// Проверяем, что все интервалы из диапазона содержатся в availableSlots
 			return (
 				slotDate === date &&
 				requestedSlots.every((requestedSlot) =>
@@ -104,19 +98,28 @@ router.post("/", async (req, res) => {
 				)
 			);
 		});
-		console.log(isSlotAvailable);
 
 		if (!isSlotAvailable) {
 			return res.status(400).json({
 				message: "Выбранное время недоступно для бронирования.",
 			});
 		}
-		await Booking.save();
+
+		// Создаем бронирование для обычного клиента
+		const booking = new Booking({
+			clientId,
+			photographerId,
+			date,
+			timeSlot,
+			status: "pending",
+			prepayment: 1000, // Предоплата для обычных клиентов
+		});
+
+		await booking.save();
 
 		const clientMessage =
 			`Ваше бронирование создано!\n\n` +
-			`Детали бронирования:\n` +
-			`Фотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
+			`Детали бронирования:\nФотограф: ${photographer.firstName}\nДата: ${date}\nВремя: ${timeSlot}\n\n` +
 			`Пожалуйста, внесите предоплату в размере 1000 рублей для подтверждения.`;
 
 		sendTelegramMessage(client.telegramId, clientMessage);
@@ -124,6 +127,7 @@ router.post("/", async (req, res) => {
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
+			booking,
 		});
 	} catch (error) {
 		console.log("Ошибка при создании бронирования:", error);
@@ -133,7 +137,6 @@ router.post("/", async (req, res) => {
 		});
 	}
 });
-
 // Загрузить скриншот оплаты и обновить статус на "awaiting_confirmation"
 router.put("/:id/uploadScreenshot", async (req, res) => {
 	const { id } = req.params;
