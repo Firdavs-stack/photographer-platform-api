@@ -33,7 +33,9 @@ router.get("/client/:clientId", async (req, res) => {
 // Создать новое бронирование
 router.post("/", async (req, res) => {
 	const { clientId, photographerId, date, timeSlot, isVip } = req.body;
-
+	console.log(
+		`SIIU ${clientId} ${photographerId} ${date} ${timeSlot} ${isVip}`
+	);
 	try {
 		// Получаем информацию о клиенте
 		const client = await Client.findById(clientId);
