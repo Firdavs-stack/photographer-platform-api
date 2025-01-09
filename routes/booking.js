@@ -104,7 +104,7 @@ router.post("/", async (req, res) => {
 				)
 			);
 		});
-
+		console.log(`${isSlotAvailable}`);
 		if (!isSlotAvailable) {
 			return res.status(400).json({
 				message: "Выбранное время недоступно для бронирования.",
@@ -129,7 +129,6 @@ router.post("/", async (req, res) => {
 
 		sendTelegramMessage(client.telegramId, clientMessage);
 
-		console.log(`${isSlotAvailable}`);
 		res.status(201).json({
 			message:
 				"Бронирование создано. Пожалуйста, внесите предоплату для подтверждения.",
