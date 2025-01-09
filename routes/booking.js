@@ -95,7 +95,7 @@ router.post("/", async (req, res) => {
 						.padStart(2, "0")}:00`
 				);
 			}
-			console.log(`${slotDate} ${date}`);
+
 			// Проверяем, что все интервалы из диапазона содержатся в availableSlots
 			return (
 				slotDate === date &&
@@ -104,21 +104,12 @@ router.post("/", async (req, res) => {
 				)
 			);
 		});
-		console.log(`${isSlotAvailable}`);
+
 		if (!isSlotAvailable) {
 			return res.status(400).json({
 				message: "Выбранное время недоступно для бронирования.",
 			});
 		}
-		// Создаём бронирование для обычного клиента с предоплатой
-		const booking = new Booking({
-			clientId,
-			photographerId,
-			date,
-			timeSlot,
-			status: "awaiting_prepayment", // Требуется предоплата
-			prepayment: 1000, // Устанавливаем сумму предоплаты для обычных клиентов (можно изменить)
-		});
 		await booking.save();
 
 		const clientMessage =
